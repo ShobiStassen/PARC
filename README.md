@@ -1,4 +1,4 @@
-# PARC-phenotyping-by-accelerated-refined-community-partitioning
+# PARC
 PARC, “phenotyping by accelerated refined community-partitioning” - is a fast, automated, combinatorial  graph-based clustering approach that integrates hierarchical graph construction (HNSW) and data-driven graph-pruning with the new Leiden community-detection algorithm.
 ## Dependencies
 - ensure you have neccesary C++ compilers
