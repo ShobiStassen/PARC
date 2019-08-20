@@ -40,7 +40,17 @@ plt.show()
 ```
 ## Example Usage: 10X PBMC (Zheng et al., 2017)
 
-![](Images/10X_PBMC_PARC.png)
+```
+import PARC
+## load data (50 PCs of filtered gene matrix pre-processed as per Zheng et al. 2017)
+X = open() // load file
+y = open() // load annotations
+
+parc = PARC(X,y) // instantiate PARC
+parc.run_clustering() // run the clustering
+parc_labels = parc.labels 
+```
+![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
 
 ## References to dependencies 
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
