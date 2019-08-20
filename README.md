@@ -38,7 +38,9 @@ plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
 plt.show()
 
 ```
+## Example Usage: 10X PBMC (Zheng et al., 2017)
 
+![](Images/10X_PBMC_PARC.png)
 
 ## References to dependencies 
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
