@@ -69,11 +69,12 @@ parc_labels = parc1.labels
 ![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
 
 ## Example Usage with Scanpy: 10X PBMC (Zheng et al., 2017)
+[(https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)]
 
 ```
 import scanpy.api as sc
 //load data
-path = './data/zheng17_filtered_matrices_mex/hg19/' // [(https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)]
+path = './data/zheng17_filtered_matrices_mex/hg19/'
 adata = sc.read(path + 'matrix.mtx', cache=True).T  # transpose the data
 adata.var_names = pd.read_csv(path + 'genes.tsv', header=None, sep='\t')[1]
 adata.obs_names = pd.read_csv(path + 'barcodes.tsv', header=None)[0]
