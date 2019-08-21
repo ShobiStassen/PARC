@@ -70,7 +70,7 @@ parc_labels = parc1.labels
 
 ## Example Usage with Scanpy: 10X PBMC (Zheng et al., 2017)
 
-[raw datafile] (https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
+[raw datafile](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
 
 ```
 import scanpy.api as sc
