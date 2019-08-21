@@ -69,6 +69,8 @@ parc_labels = parc1.labels
 ![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
 
 ## Example Usage with Scanpy: 10X PBMC (Zheng et al., 2017)
+
+```
 import scanpy.api as sc
 //load data
 path = './data/zheng17_filtered_matrices_mex/hg19/' // [(https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)]
@@ -90,7 +92,7 @@ adata2.obs["PARC"] = pd.Categorical(parc_labels)
 //visualize
 sc.pl.umap(adata, color='annotations')
 sc.pl.umap(adata, color='PARC')
-
+```
 
 ## References to dependencies 
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
