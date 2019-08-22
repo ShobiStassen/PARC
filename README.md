@@ -108,7 +108,7 @@ adata2.obs["PARC"] = pd.Categorical(parc_labels)
 sc.pl.umap(adata, color='annotations')
 sc.pl.umap(adata, color='PARC')
 ```
-## Example Usage 4. Large-scale (1.1M cells) Lung Cancer cells (multi-ATOM imaging cytometry based features)
+## Example Usage 4. Large-scale (70K subset and 1.1M cells) Lung Cancer cells (multi-ATOM imaging cytometry based features)
 
 ```
 import PARC
@@ -116,7 +116,7 @@ import pandas as pd
 
 // load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells x 26 features)
 X = pd.read_csv("'./LungData.txt").values.astype("float") 
-y = list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0]) // list of cell-type annotations
+y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
 // run PARC
 parc1 = parc.PARC(X, y)
