@@ -1,7 +1,8 @@
 # PARC
 PARC, “phenotyping by accelerated refined community-partitioning” - is a fast, automated, combinatorial  graph-based clustering approach that integrates hierarchical graph construction (HNSW) and data-driven graph-pruning with the new Leiden community-detection algorithm.
-## Install Dependencies
-### Install leidenalg, igraph and hnswlib
+
+## Getting Started
+### Install dependencies: leidenalg, igraph and hnswlib
 ```
 pip install leidenalg igraph 
 ```
@@ -14,7 +15,7 @@ python3 setup.py install
 ```
 
   
-## Example Usage - IRIS and Digits dataset from sklearn
+## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
 ```
 import PARC as parc
@@ -47,7 +48,7 @@ Parc2.run_PARC()
 parc_labels = Parc2.labels
 
 ```
-## Example Usage: 10X PBMC (Zheng et al., 2017)
+## Example Usage 2. (mid-scale scRNA-seq): 10X PBMC (Zheng et al., 2017)
 [pre-processed datafile](https://drive.google.com/file/d/1H4gOZ09haP_VPCwsYxZt4vf3hJ1GZj3b/view?usp=sharing)
 
 [annotations](Datasets/annotations_zhang.txt)
@@ -71,7 +72,7 @@ parc_labels = parc1.labels
 ```
 ![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
 
-## Example Usage with Scanpy: 10X PBMC (Zheng et al., 2017)
+## Example Usage with Scanpy pipeline 3. 10X PBMC (Zheng et al., 2017)
 
 [raw datafile](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
 
@@ -98,6 +99,8 @@ adata2.obs["PARC"] = pd.Categorical(parc_labels)
 sc.pl.umap(adata, color='annotations')
 sc.pl.umap(adata, color='PARC')
 ```
+## Example Usage 4. Large-scale (1.1M cells) Lung Cancer cells (multi-ATOM imaging cytometry based features)
+
 
 ## References to dependencies 
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
