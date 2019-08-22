@@ -77,6 +77,10 @@ parc_labels = parc1.labels
 [raw datafile](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
 
 ```
+pip install scanpy
+```
+
+```
 import scanpy.api as sc
 //load data
 path = './data/zheng17_filtered_matrices_mex/hg19/'
