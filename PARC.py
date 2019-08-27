@@ -13,21 +13,18 @@ from pandas import ExcelWriter
 from collections import Counter
 
 
-def func_mode(ll):  # return MODE of list
-    # If multiple items are maximal, the function returns the first one encountered.
-    return max(set(ll), key=ll.count)
 
-class ALPH:
-    def __init__(self, data, true_label, too_big_factor = 0.4, small_pop = 10,dist_std_local = 2,dist_std_global = 3,jac_std_global=0.15, keep_all_local_dist = False,jac_weighted_edges = True,knn = 30, n_iter_leiden=5):
+class PARC:
+    def __init__(self, data, true_label=None, too_big_factor = 0.4, small_pop = 10,dist_std_local = 2,dist_std_global = 3,jac_std_global='median', keep_all_local_dist = False,jac_weighted_edges = True,knn = 30, n_iter_leiden=5):
           #higher dist_std_local means more edges are kept
           #highter jac_std_global means more edges are kept
         self.data = data
         self.true_label= true_label
-        self.too_big_factor = too_big_factor
-        self.small_pop = small_pop
+        self.too_big_factor = too_big_factor ##if a cluster exceeds this share of the entire cell population, then the PARC will be run on the large cluster. at 0.4 it does not come into play
+        self.small_pop = small_pop #smallest cluster population to be considered a community
         self.dist_std_local =dist_std_local
         self.dist_std_global = dist_std_global
-        self.jac_std_global=  jac_std_global
+        self.jac_std_global=  jac_std_global ##0.15 is also a recommended value performing empirically similar to 'median'
         self.keep_all_local_dist = keep_all_local_dist
         self.jac_weighted_edges = jac_weighted_edges
         self.knn = knn
@@ -89,7 +86,11 @@ class ALPH:
                                shape=(n_cells, n_cells))
         return csr_graph
 
-    def run_toobig_sublouvain(self, X_data, knn_struct, jac_std_toobig=0.3,
+    def func_mode(self, ll):  # return MODE of list
+        # If multiple items are maximal, the function returns the first one encountered.
+        return max(set(ll), key=ll.count)
+    
+    def run_toobig_subPARC(self, X_data, jac_std_toobig=0.3,
                               jac_weighted_edges=True):
         n_elements = X_data.shape[0]
         hnsw = self.knn_struct(X_data)
@@ -129,53 +130,53 @@ class ALPH:
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
                                                  n_iterations=self.n_iter_leiden)
         print('Q=', round(partition.quality()))
-        louvain_labels = np.asarray(partition.membership)
-        louvain_labels = np.reshape(louvain_labels, (n_elements, 1))
+        PARC_labels_leiden = np.asarray(partition.membership)
+        PARC_labels_leiden = np.reshape(PARC_labels_leiden, (n_elements, 1))
         small_pop_list = []
         small_cluster_list = []
         small_pop_exist = False
 
-        for cluster in set(louvain_labels):
-            population = len(np.where(louvain_labels == cluster)[0])
+        for cluster in set(PARC_labels_leiden):
+            population = len(np.where(PARC_labels_leiden == cluster)[0])
             if population < 10:
                 small_pop_exist = True
-                small_pop_list.append(list(np.where(louvain_labels == cluster)[0]))
+                small_pop_list.append(list(np.where(PARC_labels_leiden == cluster)[0]))
                 small_cluster_list.append(cluster)
 
         for small_cluster in small_pop_list:
             for single_cell in small_cluster:
                 old_neighbors = neighbor_array[single_cell, :]
-                group_of_old_neighbors = louvain_labels[old_neighbors]
+                group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                 group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                 available_neighbours = set(group_of_old_neighbors) - set(small_cluster_list)
                 if len(available_neighbours) > 0:
                     available_neighbours_list = [value for value in group_of_old_neighbors if
                                                  value in list(available_neighbours)]
                     best_group = max(available_neighbours_list, key=available_neighbours_list.count)
-                    louvain_labels[single_cell] = best_group
+                    PARC_labels_leiden[single_cell] = best_group
 
         while small_pop_exist == True:
             small_pop_list = []
             small_pop_exist = False
-            for cluster in set(list(louvain_labels.flatten())):
-                population = len(np.where(louvain_labels == cluster)[0])
+            for cluster in set(list(PARC_labels_leiden.flatten())):
+                population = len(np.where(PARC_labels_leiden == cluster)[0])
                 if population < 10:
                     small_pop_exist = True
                     print(cluster, ' has small population of', population, )
-                    small_pop_list.append(np.where(louvain_labels == cluster)[0])
+                    small_pop_list.append(np.where(PARC_labels_leiden == cluster)[0])
             for small_cluster in small_pop_list:
                 for single_cell in small_cluster:
                     old_neighbors = neighbor_array[single_cell, :]
-                    group_of_old_neighbors = louvain_labels[old_neighbors]
+                    group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                     group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                     best_group = max(set(group_of_old_neighbors), key=group_of_old_neighbors.count)
-                    louvain_labels[single_cell] = best_group
+                    PARC_labels_leiden[single_cell] = best_group
 
-        dummy, louvain_labels = np.unique(list(louvain_labels.flatten()), return_inverse=True)
-        self.labels = louvain_labels
-        return louvain_labels
+        dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
+        self.labels = PARC_labels_leiden
+        return PARC_labels_leiden
 
-    def run_sublouvain(self):
+    def run_subPARC(self):
         X_data = self.data
         too_big_factor = self.too_big_factor
         small_pop =self.small_pop
@@ -185,21 +186,12 @@ class ALPH:
         n_elements = X_data.shape[0]
 
         print('number of k-nn is', knn, too_big_factor, 'small pop is', small_pop)
-        knn_query_start = time.time()
+
         neighbor_array, distance_array = self.knn_struct.knn_query(X_data, k=knn)
 
         csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
         sources, targets = csr_array.nonzero()
 
-
-        # #global pruning based on distance metric (typically such that no pruning occurs here)
-        # mask = np.zeros(len(csr_array.data), dtype=bool)
-        # threshold = np.mean(csr_array.data) + (np.std(csr_array.data)*self.dist_std_global)
-        # print(threshold)
-        # mask |= (csr_array.data < threshold)
-        # csr_array.data[mask] = 0
-        # csr_array.eliminate_zeros()
-        # sources, targets = csr_array.nonzero()
         edgelist = list(zip(sources, targets))
 
         edgelist_copy = edgelist.copy()
@@ -238,17 +230,17 @@ class ALPH:
             print('call leiden NOT weighted', self.n_iter_leiden, 'iterations')
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, n_iterations=self.n_iter_leiden)
             print(time.time() - start_leiden)
-        time_end_louvain = time.time()
+        time_end_PARC = time.time()
         print('Q=', round(partition.quality()))
-        louvain_labels = np.asarray(partition.membership)
-        louvain_labels = np.reshape(louvain_labels, (n_elements, 1))
+        PARC_labels_leiden = np.asarray(partition.membership)
+        PARC_labels_leiden = np.reshape(PARC_labels_leiden, (n_elements, 1))
 
 
         too_big = False
-        set_louvain_labels = set(list(louvain_labels.T)[0])
-        print('labels found after Leiden', set_louvain_labels)
+        set_PARC_labels_leiden = set(list(PARC_labels_leiden.T)[0])
+        print('labels found after Leiden', set_PARC_labels_leiden)
 
-        cluster_i_loc = np.where(louvain_labels == 0)[0]  # the 0th cluster is the largest one. so if cluster 0 is not too big, then the others wont be too big either
+        cluster_i_loc = np.where(PARC_labels_leiden == 0)[0]  # the 0th cluster is the largest one. so if cluster 0 is not too big, then the others wont be too big either
         pop_i = len(cluster_i_loc)
         if pop_i > too_big_factor * n_elements:  # 0.4
             too_big = True
@@ -262,28 +254,28 @@ class ALPH:
             X_data_big = X_data[cluster_big_loc, :]
             knn_struct_big = self.make_knn_struct(X_data_big)
             print(X_data_big.shape)
-            louvain_labels_big = self.run_toobig_sublouvain(X_data_big, knn_struct_big, k_nn=knn_big, self_loop=False,
+            PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big, knn_struct_big, k_nn=knn_big, self_loop=False,
                                                        jac_std=self.jac_std_global)  # knn=200 for 10x
-            print('set of new big labels ', set(louvain_labels_big.flatten()))
-            louvain_labels_big = louvain_labels_big + 1000  # len(set(louvain_labels.T)[0])
-            print('set of new big labels +1000 ', set(list(louvain_labels_big.flatten())))
+            print('set of new big labels ', set(PARC_labels_leiden_big.flatten()))
+            PARC_labels_leiden_big = PARC_labels_leiden_big + 1000  # len(set(PARC_labels_leiden.T)[0])
+            print('set of new big labels +1000 ', set(list(PARC_labels_leiden_big.flatten())))
             pop_list = []
-            for item in set(list(louvain_labels_big.flatten())):
-                pop_list.append(list(louvain_labels_big.flatten()).count(item))
+            for item in set(list(PARC_labels_leiden_big.flatten())):
+                pop_list.append(list(PARC_labels_leiden_big.flatten()).count(item))
             print('pop of new big labels', pop_list)
             jj = 0
-            print('shape louvain_labels', louvain_labels.shape)
+            print('shape PARC_labels_leiden', PARC_labels_leiden.shape)
             for j in cluster_big_loc:
-                louvain_labels[j] = louvain_labels_big[jj]
+                PARC_labels_leiden[j] = PARC_labels_leiden_big[jj]
                 jj = jj + 1
-            dummy, louvain_labels = np.unique(list(louvain_labels.flatten()), return_inverse=True)
-            print('new set of labels ', set(louvain_labels))
+            dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
+            print('new set of labels ', set(PARC_labels_leiden))
             too_big = False
-            set_louvain_labels = set(louvain_labels)  # list(louvain_labels.T)[0])
+            set_PARC_labels_leiden = set(PARC_labels_leiden)  # list(PARC_labels_leiden.T)[0])
 
-            louvain_labels = np.asarray(louvain_labels)
-            for cluster_ii in set_louvain_labels:
-                cluster_ii_loc = np.where(louvain_labels == cluster_ii)[0]
+            PARC_labels_leiden = np.asarray(PARC_labels_leiden)
+            for cluster_ii in set_PARC_labels_leiden:
+                cluster_ii_loc = np.where(PARC_labels_leiden == cluster_ii)[0]
                 pop_ii = len(cluster_ii_loc)
                 not_yet_expanded = pop_ii not in list_pop_too_bigs
                 if pop_ii > too_big_factor * n_elements and not_yet_expanded == True:
@@ -295,73 +287,73 @@ class ALPH:
             if too_big == True:
                 list_pop_too_bigs.append(big_pop)
                 print('cluster', cluster_big, 'is too big with population', big_pop, '. It will be expanded')
-        dummy, louvain_labels = np.unique(list(louvain_labels.flatten()), return_inverse=True)
+        dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
         small_pop_list = []
         small_cluster_list = []
         small_pop_exist = False
 
-        for cluster in set(louvain_labels):
-            population = len(np.where(louvain_labels == cluster)[0])
+        for cluster in set(PARC_labels_leiden):
+            population = len(np.where(PARC_labels_leiden == cluster)[0])
 
             if population < small_pop:  # 10
                 small_pop_exist = True
 
-                small_pop_list.append(list(np.where(louvain_labels == cluster)[0]))
+                small_pop_list.append(list(np.where(PARC_labels_leiden == cluster)[0]))
                 small_cluster_list.append(cluster)
 
         for small_cluster in small_pop_list:
 
             for single_cell in small_cluster:
                 old_neighbors = neighbor_array[single_cell, :]
-                group_of_old_neighbors = louvain_labels[old_neighbors]
+                group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                 group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                 available_neighbours = set(group_of_old_neighbors) - set(small_cluster_list)
                 if len(available_neighbours) > 0:
                     available_neighbours_list = [value for value in group_of_old_neighbors if
                                                  value in list(available_neighbours)]
                     best_group = max(available_neighbours_list, key=available_neighbours_list.count)
-                    louvain_labels[single_cell] = best_group
+                    PARC_labels_leiden[single_cell] = best_group
 
         while small_pop_exist == True:
             small_pop_list = []
             small_pop_exist = False
-            for cluster in set(list(louvain_labels.flatten())):
-                population = len(np.where(louvain_labels == cluster)[0])
+            for cluster in set(list(PARC_labels_leiden.flatten())):
+                population = len(np.where(PARC_labels_leiden == cluster)[0])
                 if population < small_pop:
                     small_pop_exist = True
                     print(cluster, ' has small population of', population, )
-                    small_pop_list.append(np.where(louvain_labels == cluster)[0])
+                    small_pop_list.append(np.where(PARC_labels_leiden == cluster)[0])
             for small_cluster in small_pop_list:
                 for single_cell in small_cluster:
                     old_neighbors = neighbor_array[single_cell, :]
-                    group_of_old_neighbors = louvain_labels[old_neighbors]
+                    group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                     group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                     best_group = max(set(group_of_old_neighbors), key=group_of_old_neighbors.count)
-                    louvain_labels[single_cell] = best_group
+                    PARC_labels_leiden[single_cell] = best_group
 
-        print('small and big round took ', round(time.time() - time_end_louvain), 'seconds', time.ctime())
-        dummy, louvain_labels = np.unique(list(louvain_labels.flatten()), return_inverse=True)
-        louvain_labels = list(louvain_labels.flatten())
-        print('final labels allocation', set(louvain_labels))
+        print('small and big round took ', round(time.time() - time_end_PARC), 'seconds', time.ctime())
+        dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
+        PARC_labels_leiden = list(PARC_labels_leiden.flatten())
+        print('final labels allocation', set(PARC_labels_leiden))
         pop_list = []
-        for item in set(louvain_labels):
-            pop_list.append(louvain_labels.count(item))
+        for item in set(PARC_labels_leiden):
+            pop_list.append(PARC_labels_leiden.count(item))
         print('pop of big list is of length and populations', len(pop_list), pop_list)
 
-        self.labels = louvain_labels #list
+        self.labels = PARC_labels_leiden #list
         return
 
     def accuracy(self, onevsall=1):
 
         true_labels = self.true_label
         Index_dict = {}
-        alph_labels = self.labels
-        N = len(alph_labels)
+        PARC_labels = self.labels
+        N = len(PARC_labels)
         n_cancer = list(true_labels).count(onevsall)
         n_pbmc = N - n_cancer
 
         for k in range(N):
-            Index_dict.setdefault(alph_labels[k], []).append(true_labels[k])
+            Index_dict.setdefault(PARC_labels[k], []).append(true_labels[k])
         num_groups = len(Index_dict)
         sorted_keys = list(sorted(Index_dict.keys()))
         error_count = []
@@ -371,7 +363,7 @@ class ALPH:
 
         for kk in sorted_keys:
             vals = [t for t in Index_dict[kk]]
-            majority_val = func_mode(vals)
+            majority_val = self.func_mode(vals)
             if majority_val == onevsall: print('cluster', kk, ' has majority', onevsall, 'with population', len(vals))
             if kk == -1:
                 len_unknown = len(vals)
@@ -389,13 +381,13 @@ class ALPH:
                 fn = fn + len([e for e in vals if e == onevsall])
                 error_count.append(len([e for e in vals if e != majority_val]))
 
-        predict_class_array = np.array(alph_labels)
-        alph_labels_array = np.array(alph_labels)
+        predict_class_array = np.array(PARC_labels)
+        PARC_labels_array = np.array(PARC_labels)
         number_clusters_for_target = len(thp1_labels)
         for cancer_class in thp1_labels:
-            predict_class_array[alph_labels_array == cancer_class] = 1
+            predict_class_array[PARC_labels_array == cancer_class] = 1
         for benign_class in pbmc_labels:
-            predict_class_array[alph_labels_array == benign_class] = 0
+            predict_class_array[PARC_labels_array == benign_class] = 0
         predict_class_array.reshape((predict_class_array.shape[0], -1))
         error_rate = sum(error_count) / N
         n_target = tp + fn
@@ -410,10 +402,10 @@ class ALPH:
             f1_score = precision * recall * 2 / (precision + recall)
         majority_truth_labels = np.empty((len(true_labels), 1), dtype=object)
 
-        for cluster_i in set(alph_labels):
-            cluster_i_loc = np.where(np.asarray(alph_labels) == cluster_i)[0]
+        for cluster_i in set(PARC_labels):
+            cluster_i_loc = np.where(np.asarray(PARC_labels) == cluster_i)[0]
             true_labels = np.asarray(true_labels)
-            majority_truth = func_mode(list(true_labels[cluster_i_loc]))
+            majority_truth = self.func_mode(list(true_labels[cluster_i_loc]))
             majority_truth_labels[cluster_i_loc] = majority_truth
 
         majority_truth_labels = list(majority_truth_labels.flatten())
@@ -423,7 +415,10 @@ class ALPH:
 
         return accuracy_val, predict_class_array, majority_truth_labels, number_clusters_for_target
 
-    def run_mainlouvain(self):
+    def run_PARC(self):
+        print('data has dimensions (samples x dimensions)', self.data.shape[0],'x',self.data.shape[1])
+        if type(self.true_label) == None: self.true_label = [1]*self.data.shape[0]
+
         list_roc = []
 
         time_start_total = time.time()
@@ -432,7 +427,7 @@ class ALPH:
         self.knn_struct = self.make_knn_struct()
         time_end_knn_struct = time.time() - time_start_knn
         # Query dataset, k - number of closest elements (returns 2 numpy arrays)
-        self.run_sublouvain()
+        self.run_subPARC()
         run_time =time.time() - time_start_total
         print('time elapsed {:.2f} seconds'.format(run_time))
 
@@ -487,8 +482,8 @@ def main():
     #
     # # Create a scatterplot of first two features
 
-    p1 = ALPH(X,y)
-    p1.run_mainlouvain()
+    p1 = PARC(X,y)
+    p1.run_PARC()
     plt.scatter(X[:,0],X[:,1], c = y)
 
     # View scatterplot
