@@ -4,29 +4,22 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 ## Getting Started
 ### Install dependencies: leidenalg, igraph and hnswlib
 ```
-pip install leidenalg python-igraph 
+conda create --name ParcEnv pip
+pip install hnswlib leidenalg python-igraph 
 ```
-```
-git clone https://github.com/nmslib/hnswlib
-apt-get install -y python-setuptools python-pip
-pip install pybind11 numpy setuptools
-cd python_bindings // 'python bindings' is a folder within the cloned repository
-python3 setup.py install
-```
-
   
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
 ```
-import PARC as parc
-from sklearn.datasets import make_blobs
+from parc import PARC
 import matplotlib.pyplot as plt
 from sklearn import datasets
 
 // load sample IRIS data
+//data (n_obs x k_dim, 150x4)
 iris = datasets.load_iris()
-X = iris.data // data (n_obs x k_dim, 150x4)
-y=iris.target // labels
+X = iris.data
+y=iris.target
 
 plt.scatter(X[:,0],X[:,1], c = y) // colored by 'ground truth'
 plt.show()
