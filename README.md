@@ -4,7 +4,7 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 ## Getting Started
 ### Install dependencies: leidenalg, igraph and hnswlib
 ```
-pip install leidenalg igraph 
+pip install leidenalg python-igraph 
 ```
 ```
 git clone https://github.com/nmslib/hnswlib
@@ -29,13 +29,14 @@ X = iris.data // data (n_obs x k_dim, 150x4)
 y=iris.target // labels
 
 plt.scatter(X[:,0],X[:,1], c = y) // colored by 'ground truth'
+plt.show()
 
 Parc1 = parc.PARC(X,y) // instantiate PARC
 Parc1.run_PARC() // run the clustering
 parc_labels = Parc1.labels
 
 # View scatterplot colored by PARC labels
-plt.show()
+
 plt.scatter(X[:, 0], X[:, 1], c=parc_labels)
 plt.show()
 
