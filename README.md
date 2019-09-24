@@ -138,4 +138,4 @@ parc_labels = parc1.labels
 - igraph (igraph.org/python/)
 
 ## Citing
-If you find this code useful in your work, please consider citing this paper [PARC:ultrafast and accurate clustering of phenotypic data of millions of single cells] (https://doi.org/10.1101/765628)
+If you find this code useful in your work, please consider citing this paper [PARC:ultrafast and accurate clustering of phenotypic data of millions of single cells](https://doi.org/10.1101/765628)
