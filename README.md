@@ -2,11 +2,17 @@
 PARC, “phenotyping by accelerated refined community-partitioning” - is a fast, automated, combinatorial  graph-based clustering approach that integrates hierarchical graph construction (HNSW) and data-driven graph-pruning with the new Leiden community-detection algorithm.
 
 ## Getting Started
-### Install dependencies: leidenalg, igraph and hnswlib
+### install using pip
 ```
-conda create --name ParcEnv pip
-pip install hnswlib leidenalg python-igraph 
+conda create --name ParcEnv pip // (optional)
+pip install parc // tested on linux
 ```
+### install by cloning repository and running setup.py 
+git clone https://github.com/ShobiStassen/PARC.git
+python3 setup.py install // cd into the directory of the cloned PARC folder containing setup.py and issue this command
+
+### install dependencies separately if needed
+pip install leidenalg, igraph and hnswlib
   
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
