@@ -19,7 +19,7 @@ pip install leidenalg, igraph and hnswlib
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
 ```
-from parc import PARC
+import parc
 import matplotlib.pyplot as plt
 from sklearn import datasets
 
@@ -56,7 +56,7 @@ parc_labels = Parc2.labels
 [annotations](Datasets/annotations_zhang.txt)
 
 ```
-import PARC
+import parc
 import csv
 
 ## load data (50 PCs of filtered gene matrix pre-processed as per Zheng et al. 2017)
@@ -119,7 +119,7 @@ sc.pl.umap(adata, color='PARC')
 [1.1M cell features and annotations](https://data.mendeley.com/datasets/nnbfwjvmvw/draft?a=dae895d4-25cd-4bdf-b3e4-57dd31c11e37)
 
 ```
-import PARC
+import parc
 import pandas as pd
 
 // load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells x 26 features)
