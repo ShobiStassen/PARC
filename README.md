@@ -9,7 +9,6 @@ pip install parc // tested on linux
 ```
 ### install by cloning repository and running setup.py 
 git clone https://github.com/ShobiStassen/PARC.git 
-
 python3 setup.py install // cd into the directory of the cloned PARC folder containing setup.py and issue this command
 
 ### install dependencies separately if needed
