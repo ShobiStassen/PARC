@@ -151,6 +151,20 @@ parc_labels = parc1.labels
 ```
 ![](Images/70K_Lung_github_overview.png) tsne plot of annotations and PARC clustering, heatmap of features
 
+### Parameters and attributes
+input: 
+data 
+true_label 
+dist_std_local
+| Input Parameter | Description |
+| --- | --- |
+| `data` | (numpy.ndarray) n_samples x n_features |
+| `true_label` | (numpy.ndarray) (optional)|
+| `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. the higher the parameter, the more edges are retained|
+| `jac_std_global` |  (optional, default = 'median') global level  graph pruning. can also be defined as the number of standard deviations above the global mean jaccard weight of edges. 0.1-1 provide reasonable pruning. higher value means more edges are retained|
+| `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. the higher the parameter, the more edges are retained|
+
+
 ## References to dependencies 
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
 - hsnwlib Malkov, Yu A., and D. A. Yashunin. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small   World graphs." TPAMI, preprint: https://arxiv.org/abs/1603.09320
