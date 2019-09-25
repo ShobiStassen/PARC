@@ -158,8 +158,14 @@ parc_labels = parc1.labels
 | `data` | (numpy.ndarray) n_samples x n_features |
 | `true_label` | (numpy.ndarray) (optional)|
 | `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. the higher the parameter, the more edges are retained|
-| `jac_std_global` |  (optional, default = 'median') global level  graph pruning. can also be defined as the number of standard deviations above the global mean jaccard weight of edges. 0.1-1 provide reasonable pruning. higher value means more edges are retained|
-| `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. the higher the parameter, the more edges are retained|
+| `jac_std_global` |  (optional, default = 'median') global level  graph pruning. can also be defined as the number of standard deviations above the global mean jaccard weight of edges. 0.1-1 provide reasonable pruning. higher value means less pruning|
+| `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. higher value means less pruning|
+
+| Attributes | Description |
+| ---------- |----------|
+| `labels` | (list) length n_samples of corresponding cluster labels |
+| `f1_mean` | (list) f1 score (not weighted by population). For details see supplementary section of [paper](https://doi.org/10.1101/765628) |
+| `stats_df` | (DataFrame) stores parameter values and performance metrics |
 
 
 ## References to dependencies 
