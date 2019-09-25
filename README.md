@@ -13,9 +13,25 @@ git clone https://github.com/ShobiStassen/PARC.git
 python3 setup.py install // cd into the directory of the cloned PARC folder containing setup.py and issue this command
 ```
 
-### install dependencies separately if needed
+### install dependencies separately if needed (linux)
+```
 pip install python-igraph, leidenalg, hnswlib
-  
+```
+
+### Windows installation
+
+install python-igraph and leidenalg using binaries before calling "pip install parc"
+python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
+```
+pip install python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl 
+```
+leidenalg: depends on python-igraph. download windows binary(https://pypi.org/project/leidenalg/#files) available for python3.6 only
+```
+pip install leidenalg-0.7.0-cp36-cp36m-win_amd64.whl
+pip install hnswlib
+pip install parc
+```
+ 
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
 ```
