@@ -70,3 +70,51 @@ Collecting six>=1.5 (from python-dateutil>=2.6.1->pandas->parc)
 Installing collected packages: pybind11, numpy, hnswlib, python-igraph, leidenalg, pytz, six, python-dateutil, pandas, scipy, parc
 Successfully installed hnswlib-0.3.2.0 leidenalg-0.7.0 numpy-1.17.2 pandas-0.25.1 parc-0.14 pybind11-2.4.2 python-dateutil-2.8.0 python-igraph-0.7.1.post6 pytz-2019.2 scipy-1.3.1 six-1.12.0
 (testParc1) shobi@shobi:~$ 
+(testParc1) shobi@shobi:~$ pip install sklearn matplotlib
+>>> import parc
+>>> import matplotlib.pyplot as plt
+>>> from sklearn import datasets
+>>> iris = datasets.load_iris()
+>>> X = iris.data
+>>> y=iris.target
+>>> p1 = parc.PARC(X,y)
+>>> p1.run_PARC()
+data has dimensions (samples x dimensions) 150 x 4
+input shape 150 x 4
+number of k-nn is 30 0.4 small pop is 10
+will do local pruning based on minowski metric True
+size neighbor array (150, 30)
+local pruning at: 2 standard deviations above mean
+share of neighbors discarded in local distance pruning 40 0
+average degree of prejacard graph is  57.44
+computing Jaccard metric
+percentage of edges KEPT after Jaccard 0.49814298978644383
+average degree of graph is  28.613333333333333
+average degree of SIMPLE graph is  15.893333333333333
+starting Louvain clustering at Wed Sep 25 14:13:26 2019
+call leiden weighted for  5 iterations
+0.005202770233154297
+Q= 1
+labels found after Leiden {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+small and big round took  0 seconds Wed Sep 25 14:13:26 2019
+final labels allocation {0, 1, 2, 3, 4, 5}
+pop of big list is of length and populations 6 [36, 29, 34, 21, 19, 11]
+time elapsed 0.06 seconds
+current time is:  Wed Sep 25 14:13:26 2019
+target is 0
+cluster 1  has majority 0 with population 29
+cluster 3  has majority 0 with population 21
+target 0 had f1-score of 1.00
+target is 1
+cluster 2  has majority 1 with population 34
+cluster 5  has majority 1 with population 11
+target 1 had f1-score of 0.93
+target is 2
+cluster 0  has majority 2 with population 36
+cluster 4  has majority 2 with population 19
+target 2 had f1-score of 0.93
+f1-score (unweighted) mean  0.9532163742690059
+f1-score weighted (by population):  0.9532163742690059
+>>> plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
+<matplotlib.collections.PathCollection object at 0x7fc3f3e49150>
+>>> plt.show()
