@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name='parc',
-    version='0.14',
+    version='0.15',
     packages=['parc',],
     license='MIT',
     author_email = 'shobana.venkat88@gmail.com',
