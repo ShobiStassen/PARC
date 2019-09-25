@@ -1,0 +1,71 @@
+shobi@shobi:~/anaconda3/envs/parcCode/parc$ source activate testParc3
+(testParc3) shobi@shobi:~/anaconda3/envs/parcCode/parc$ conda list
+# packages in environment at /home/shobi/anaconda3/envs/testParc3:
+#
+# Name                    Version                   Build  Channel
+_libgcc_mutex             0.1                        main  
+ca-certificates           2019.8.28                     0  
+certifi                   2019.9.11                py37_0  
+libedit                   3.1.20181209         hc058e9b_0  
+libffi                    3.2.1                hd88cf55_4  
+libgcc-ng                 9.1.0                hdf63c60_0  
+libstdcxx-ng              9.1.0                hdf63c60_0  
+ncurses                   6.1                  he6710b0_1  
+openssl                   1.1.1d               h7b6447c_1  
+pip                       19.2.3                   py37_0  
+python                    3.7.4                h265db76_1  
+readline                  7.0                  h7b6447c_5  
+setuptools                41.2.0                   py37_0  
+sqlite                    3.29.0               h7b6447c_0  
+tk                        8.6.8                hbc83047_0  
+wheel                     0.33.6                   py37_0  
+xz                        5.2.4                h14c3975_4  
+zlib                      1.2.11               h7b6447c_3  
+(testParc3) shobi@shobi:~/anaconda3/envs/parcCode/parc$ pip install parc
+Collecting parc
+  Downloading https://files.pythonhosted.org/packages/fc/ec/9ebde874b068c39f619873a0621b64e7616cf368d9aa045db19e6e2040c0/parc-0.16-py3-none-any.whl
+Collecting leidenalg (from parc)
+Collecting python-igraph (from parc)
+Collecting hnswlib (from parc)
+Collecting scipy (from parc)
+  Using cached https://files.pythonhosted.org/packages/94/7f/b535ec711cbcc3246abea4385d17e1b325d4c3404dd86f15fc4f3dba1dbb/scipy-1.3.1-cp37-cp37m-manylinux1_x86_64.whl
+Collecting pybind11 (from parc)
+  Using cached https://files.pythonhosted.org/packages/88/c1/0b28ec6f7d0151eebd36c66d3c7dbaa82b5006cc9d25980b5b56cf1034f1/pybind11-2.4.2-py2.py3-none-any.whl
+Collecting numpy (from parc)
+  Using cached https://files.pythonhosted.org/packages/ba/e0/46e2f0540370f2661b044647fa447fef2ecbcc8f7cdb4329ca2feb03fb23/numpy-1.17.2-cp37-cp37m-manylinux1_x86_64.whl
+Collecting pandas (from parc)
+  Using cached https://files.pythonhosted.org/packages/7e/ab/ea76361f9d3e732e114adcd801d2820d5319c23d0ac5482fa3b412db217e/pandas-0.25.1-cp37-cp37m-manylinux1_x86_64.whl
+Collecting python-dateutil>=2.6.1 (from pandas->parc)
+  Using cached https://files.pythonhosted.org/packages/41/17/c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb/python_dateutil-2.8.0-py2.py3-none-any.whl
+Collecting pytz>=2017.2 (from pandas->parc)
+  Using cached https://files.pythonhosted.org/packages/87/76/46d697698a143e05f77bec5a526bf4e56a0be61d63425b68f4ba553b51f2/pytz-2019.2-py2.py3-none-any.whl
+Collecting six>=1.5 (from python-dateutil>=2.6.1->pandas->parc)
+  Using cached https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Installing collected packages: python-igraph, leidenalg, pybind11, numpy, hnswlib, scipy, six, python-dateutil, pytz, pandas, parc
+Successfully installed hnswlib-0.3.2.0 leidenalg-0.7.0 numpy-1.17.2 pandas-0.25.1 parc-0.16 pybind11-2.4.2 python-dateutil-2.8.0 python-igraph-0.7.1.post6 pytz-2019.2 scipy-1.3.1 six-1.12.0
+(testParc3) shobi@shobi:~/anaconda3/envs/parcCode/parc$ pip install matplotlib sklearn
+
+(testParc3) shobi@shobi:~/anaconda3/envs/parcCode/parc$ python
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0] :: Anaconda, Inc. on linux
+Type "help", "copyright", "credits" or "license" for more information.
+
+>>> import parc
+>>> import matplotlib.pyplot as plt
+>>> from sklearn import datasets
+>>> iris = datasets.load_iris()
+>>> X = iris.data
+>>> y=iris.target
+>>> 
+>>> p1=parc.PARC(X)
+>>> p1.run_PARC()
+input data has shape 150 (samples) x 4 (features)
+commencing local pruning based on minowski metric at 2 s.dev above mean
+commencing global pruning
+commencing community detection
+0.005013465881347656
+list of cluster labels and populations 6 [(0, 36), (1, 29), (2, 34), (3, 21), (4, 19), (5, 11)]
+time elapsed 0.1 seconds
+>>> plt.scatter(X[:, 0], X[:, 1],c=p1.labels)
+<matplotlib.collections.PathCollection object at 0x7f97e4e80250>
+>>> plt.show()
