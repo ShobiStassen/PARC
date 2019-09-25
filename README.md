@@ -5,6 +5,7 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 ### install using pip
 ```
 conda create --name ParcEnv pip // (optional)
+pip install pybind11 
 pip install parc // tested on linux
 ```
 ### install by cloning repository and running setup.py (ensure dependencies are installed)
