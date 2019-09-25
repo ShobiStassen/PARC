@@ -7,14 +7,14 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 conda create --name ParcEnv pip // (optional)
 pip install parc // tested on linux
 ```
-### install by cloning repository and running setup.py 
+### install by cloning repository and running setup.py (ensure dependencies are installed)
 ```
 git clone https://github.com/ShobiStassen/PARC.git 
 python3 setup.py install // cd into the directory of the cloned PARC folder containing setup.py and issue this command
 ```
 
 ### install dependencies separately if needed
-pip install leidenalg, igraph and hnswlib
+pip install python-igraph, leidenalg, hnswlib
   
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
