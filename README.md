@@ -49,7 +49,8 @@ y=iris.target
 plt.scatter(X[:,0],X[:,1], c = y) // colored by 'ground truth'
 plt.show()
 
-Parc1 = parc.PARC(X,y) // instantiate PARC
+Parc1 = parc.PARC(X,true_label=y) // instantiate PARC
+//Parc1 = parc.PARC(X) // when no 'true labels' are available
 Parc1.run_PARC() // run the clustering
 parc_labels = Parc1.labels
 
@@ -62,7 +63,7 @@ plt.show()
 digits = datasets.load_digits()
 X = digits.data // (n_obs x k_dim, 1797x64) 
 y = digits.target
-Parc2 = parc.PARC(X,y, jac_std_global='median') // 'median' is default pruning level
+Parc2 = parc.PARC(X,true_label=y, jac_std_global='median') // 'median' is default pruning level
 Parc2.run_PARC()
 parc_labels = Parc2.labels
 
@@ -89,7 +90,7 @@ with open('/annotations_zhang.txt', 'rt') as f:
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
 
-parc1 = parc.PARC(X,y) // instantiate PARC
+parc1 = parc.PARC(X,true_label=y) // instantiate PARC
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels 
 ```
@@ -119,7 +120,7 @@ adata.obs['annotations'] = pd.Categorical(annotations)
 //pre-process as per Zheng et al., and take first 50 PCs for analysis
 sc.pp.recipe_zheng17(adata)
 sc.tl.pca(adata, n_comps=50)
-parc1 = parc.PARC(adata2.obsm['X_pca'], annotations)
+parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations)
 parc_labels = parc1.labels
 adata2.obs["PARC"] = pd.Categorical(parc_labels)
 
@@ -144,7 +145,7 @@ X = pd.read_csv("'./LungData.txt").values.astype("float")
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
 // run PARC
-parc1 = parc.PARC(X, y)
+parc1 = parc.PARC(X, true_label=y)
 parc_labels = parc1.labels
 
 ```
