@@ -23,11 +23,11 @@ pip install python-igraph, leidenalg, hnswlib
 
 install python-igraph and leidenalg using binaries before calling "pip install parc"
 python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
-```
-pip install python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl 
-```
 leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files) available for python3.6 only
+
 ```
+conda create --name parcEnv python=3.6 pip
+pip install python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl 
 pip install leidenalg-0.7.0-cp36-cp36m-win_amd64.whl
 pip install hnswlib
 pip install parc
