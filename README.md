@@ -25,7 +25,7 @@ python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd
 ```
 pip install python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl 
 ```
-leidenalg: depends on python-igraph. download windows binary(https://pypi.org/project/leidenalg/#files) available for python3.6 only
+leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files) available for python3.6 only
 ```
 pip install leidenalg-0.7.0-cp36-cp36m-win_amd64.whl
 pip install hnswlib
