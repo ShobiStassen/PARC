@@ -16,6 +16,7 @@ python3 setup.py install // cd into the directory of the cloned PARC folder cont
 ### install dependencies separately if needed (linux)
 ```
 pip install python-igraph, leidenalg, hnswlib
+pip install parc
 ```
 
 ### Windows installation
