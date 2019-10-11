@@ -10,7 +10,7 @@ import time
 
 
 class PARC:
-    def __init__(self, data, true_label=None, dist_std_local = 2,jac_std_global='median', keep_all_local_dist = 'auto',too_big_factor = 0.4, small_pop = 10, jac_weighted_edges = True,knn = 30, n_iter_leiden=5):
+    def __init__(self, data, true_label=None, dist_std_local = 2,jac_std_global='median', keep_all_local_dist = 'auto',too_big_factor = 0.4, small_pop = 10, jac_weighted_edges = True,knn = 30, n_iter_leiden=5, random_seed=42):
           #higher dist_std_local means more edges are kept
           #highter jac_std_global means more edges are kept
         if keep_all_local_dist =='auto':
@@ -27,6 +27,7 @@ class PARC:
         self.jac_weighted_edges = jac_weighted_edges
         self.knn = knn
         self.n_iter_leiden = n_iter_leiden
+        self.random_seed = random_seed # enable reproducible Leiden clustering
 
     def make_knn_struct(self):
         ef=100
@@ -40,7 +41,7 @@ class PARC:
 
     def make_csrmatrix_noselfloop(self, neighbor_array, distance_array):
         local_pruning_bool = not(self.keep_all_local_dist)
-        if local_pruning_bool == True: print('commencing local pruning based on minowski metric at', self.dist_std_local, 's.dev above mean')
+        if local_pruning_bool == True: print('Starting local pruning based on Minkowski metric at', self.dist_std_local, 's.dev above mean')
         row_list = []
         col_list = []
         weight_list = []
@@ -122,10 +123,10 @@ class PARC:
         G_sim.simplify(combine_edges='sum')
         if jac_weighted_edges == True:
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
-                                                 n_iterations=self.n_iter_leiden)
+                                                 n_iterations=self.n_iter_leiden, seed=self.random_seed)
         else:
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
-                                                 n_iterations=self.n_iter_leiden)
+                                                 n_iterations=self.n_iter_leiden, seed=self.random_seed)
         #print('Q= %.2f' % partition.quality())
         PARC_labels_leiden = np.asarray(partition.membership)
         PARC_labels_leiden = np.reshape(PARC_labels_leiden, (n_elements, 1))
@@ -159,7 +160,7 @@ class PARC:
                 population = len(np.where(PARC_labels_leiden == cluster)[0])
                 if population < 10:
                     small_pop_exist = True
-                    print(cluster, ' has small population of', population, )
+                    print(cluster, ' is a small population of', population, )
                     small_pop_list.append(np.where(PARC_labels_leiden == cluster)[0])
             for small_cluster in small_pop_list:
                 for single_cell in small_cluster:
@@ -198,7 +199,7 @@ class PARC:
         #print('computing Jaccard metric')
         sim_list = G.similarity_jaccard(pairs=edgelist_copy)
 
-        print('commencing global pruning')
+        print('Starting global pruning')
 
         sim_list_array = np.asarray(sim_list)
         edge_list_copy_array = np.asarray(edgelist_copy)
@@ -216,17 +217,17 @@ class PARC:
         #print('average degree of graph is %.1f' % (np.mean(G_sim.degree())))
         G_sim.simplify(combine_edges='sum')  # "first"
         #print('average degree of SIMPLE graph is %.1f' % (np.mean(G_sim.degree())))
-        print('commencing community detection')
+        print('Starting community detection')
         if jac_weighted_edges == True:
             start_leiden = time.time()
             #print('call leiden on weighted graph for ', self.n_iter_leiden, 'iterations')
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
-                                                 n_iterations=self.n_iter_leiden)
+                                                 n_iterations=self.n_iter_leiden, seed=self.random_seed)
             print(time.time() - start_leiden)
         else:
             start_leiden = time.time()
             #print('call leiden on unweighted graph', self.n_iter_leiden, 'iterations')
-            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, n_iterations=self.n_iter_leiden)
+            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, n_iterations=self.n_iter_leiden, seed=self.random_seed)
             print(time.time() - start_leiden)
         time_end_PARC = time.time()
         #print('Q= %.1f' % (partition.quality()))
@@ -283,7 +284,7 @@ class PARC:
                     big_pop = pop_ii
             if too_big == True:
                 list_pop_too_bigs.append(big_pop)
-                print('cluster', cluster_big, 'is too big with population', big_pop, '. It will be expanded')
+                print('cluster', cluster_big, 'is too big with a population of', big_pop, '. It will be expanded')
         dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
         small_pop_list = []
         small_cluster_list = []
