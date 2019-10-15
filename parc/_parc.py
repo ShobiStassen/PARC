@@ -29,13 +29,20 @@ class PARC:
         self.n_iter_leiden = n_iter_leiden
         self.random_seed = random_seed # enable reproducible Leiden clustering
 
-    def make_knn_struct(self):
+    def make_knn_struct(self, too_big = False, big_cluster=None):
         ef=100
-        num_dims = self.data.shape[1]
-        n_elements = self.data.shape[0]
-        p = hnswlib.Index(space='l2', dim=num_dims)
-        p.init_index(max_elements=n_elements, ef_construction=200, M=30)
-        p.add_items(self.data)
+        if too_big == False:
+            num_dims = self.data.shape[1]
+            n_elements = self.data.shape[0]
+            p = hnswlib.Index(space='l2', dim=num_dims)
+            p.init_index(max_elements=n_elements, ef_construction=200, M=30)
+            p.add_items(self.data)
+        elif too_big == True:
+            num_dims = big_cluster.shape[1]
+            n_elements = big_cluster.shape[0]
+            p = hnswlib.Index(space='l2', dim=num_dims)
+            p.init_index(max_elements=n_elements, ef_construction=200, M=30)
+            p.add_items(big_cluster)
         p.set_ef(ef)  # ef should always be > k
         return p
 
@@ -91,7 +98,7 @@ class PARC:
     def run_toobig_subPARC(self, X_data, jac_std_toobig=0.3,
                               jac_weighted_edges=True):
         n_elements = X_data.shape[0]
-        hnsw = self.knn_struct(X_data)
+        hnsw = self.make_knn_struct(too_big=True,big_cluster=X_data)
         neighbor_array, distance_array = hnsw.knn_query(X_data, k=self.knn)
         #print('shapes of neigh and dist array', neighbor_array.shape, distance_array.shape)
         csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
@@ -133,7 +140,7 @@ class PARC:
         small_pop_list = []
         small_cluster_list = []
         small_pop_exist = False
-
+        dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
         for cluster in set(PARC_labels_leiden):
             population = len(np.where(PARC_labels_leiden == cluster)[0])
             if population < 10:
@@ -248,19 +255,16 @@ class PARC:
             cluster_too_big = 0
 
         while too_big == True:
-            knn_big = 50
             X_data_big = X_data[cluster_big_loc, :]
-            knn_struct_big = self.make_knn_struct(X_data_big)
+            print("dimensions of big cluster:")
             print(X_data_big.shape)
-            PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big, knn_struct_big, k_nn=knn_big, self_loop=False,
-                                                       jac_std=self.jac_std_global)
+            PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big)
             print('set of new big labels ', set(PARC_labels_leiden_big.flatten()))
             PARC_labels_leiden_big = PARC_labels_leiden_big + 1000
-            print('set of new big labels +1000 ', set(list(PARC_labels_leiden_big.flatten())))
             pop_list = []
             for item in set(list(PARC_labels_leiden_big.flatten())):
-                pop_list.append(list(PARC_labels_leiden_big.flatten()).count(item))
-            print('pop of new big labels', pop_list)
+                pop_list.append([item, list(PARC_labels_leiden_big.flatten()).count(item)])
+            print('pop of big clusters', pop_list)
             jj = 0
             print('shape PARC_labels_leiden', PARC_labels_leiden.shape)
             for j in cluster_big_loc:
