@@ -259,7 +259,6 @@ class PARC:
             print("dimensions of big cluster:")
             print(X_data_big.shape)
             PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big)
-            print('set of new big labels ', set(PARC_labels_leiden_big.flatten()))
             PARC_labels_leiden_big = PARC_labels_leiden_big + 1000
             pop_list = []
             for item in set(list(PARC_labels_leiden_big.flatten())):
