@@ -10,7 +10,7 @@ import time
 
 
 class PARC:
-    def __init__(self, data, true_label=None, dist_std_local = 2,jac_std_global='median', keep_all_local_dist = 'auto',too_big_factor = 0.4, small_pop = 10, jac_weighted_edges = True,knn = 30, n_iter_leiden=5, random_seed=42):
+    def __init__(self, data, true_label=None, dist_std_local = 2,jac_std_global='median', keep_all_local_dist = 'auto',too_big_factor = 0.4, small_pop = 10, jac_weighted_edges = True, knn = 30, n_iter_leiden=5, random_seed=42, num_threads=-1, distance='l2'):
           #higher dist_std_local means more edges are kept
           #highter jac_std_global means more edges are kept
         if keep_all_local_dist =='auto':
@@ -28,6 +28,8 @@ class PARC:
         self.knn = knn
         self.n_iter_leiden = n_iter_leiden
         self.random_seed = random_seed # enable reproducible Leiden clustering
+        self.num_threads = num_threads # number of threads used in KNN search/construction
+        self.distance = distance # Euclidean distance 'l2' by default; other options 'ip' and 'cosine'
 
     def make_knn_struct(self, too_big = False, big_cluster=None):
         ef=100
@@ -40,7 +42,8 @@ class PARC:
         elif too_big == True:
             num_dims = big_cluster.shape[1]
             n_elements = big_cluster.shape[0]
-            p = hnswlib.Index(space='l2', dim=num_dims)
+            p = hnswlib.Index(space=self.distance, dim=num_dims) # default to Euclidean distance
+            p.set_num_threads(self.num_threads) # allow user to set threads used in KNN construction
             p.init_index(max_elements=n_elements, ef_construction=200, M=30)
             p.add_items(big_cluster)
         p.set_ef(ef)  # ef should always be > k
@@ -81,7 +84,7 @@ class PARC:
 
                 rowi = rowi + 1
 
-        if local_pruning_bool == False:  # dont prune based on distance
+        if local_pruning_bool == False:  # don't prune based on distance
             row_list.extend(list(np.transpose(np.ones((n_neighbors, n_cells)) * range(0, n_cells)).flatten()))
             col_list = neighbor_array.flatten().tolist()
             weight_list = (1. / (distance_array.flatten() + 0.1)).tolist()
@@ -202,7 +205,7 @@ class PARC:
         edgelist_copy = edgelist.copy()
 
         G = ig.Graph(edgelist, edge_attrs={'weight': csr_array.data.tolist()})
-        #print('average degree of prejacard graph is %.1f'% (np.mean(G.degree())))
+        #print('average degree of pre-jaccard graph is %.1f'% (np.mean(G.degree())))
         #print('computing Jaccard metric')
         sim_list = G.similarity_jaccard(pairs=edgelist_copy)
 
