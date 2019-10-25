@@ -90,7 +90,7 @@ with open('/annotations_zhang.txt', 'rt') as f:
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
 
-parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15) // instantiate PARC
+parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15, random_seed =1) // instantiate PARC
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels 
 ```
@@ -120,7 +120,7 @@ adata.obs['annotations'] = pd.Categorical(annotations)
 //pre-process as per Zheng et al., and take first 50 PCs for analysis
 sc.pp.recipe_zheng17(adata)
 sc.tl.pca(adata, n_comps=50)
-parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations)
+parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations, random_seed =1) 
 parc_labels = parc1.labels
 adata2.obs["PARC"] = pd.Categorical(parc_labels)
 
@@ -146,9 +146,13 @@ import pandas as pd
 X = pd.read_csv("'./LungData.txt").values.astype("float") 
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
-// run PARC
+// run PARC on 1.1M and 70K cells
 parc1 = parc.PARC(X, true_label=y)
 parc_labels = parc1.labels
+
+// run PARC on H1975 spiked cells
+parc2 = parc.PARC(X, true_label=y, jac_std_global = 0.15) // 0.15 corresponds to pruning ~60% edges and can be effective for rarer populations than the default 'median'
+parc_labels_rare = parc2.labels
 
 ```
 ![](Images/70K_Lung_github_overview.png) tsne plot of annotations and PARC clustering, heatmap of features
