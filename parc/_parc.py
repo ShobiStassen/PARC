@@ -223,7 +223,13 @@ class PARC:
         new_edgelist = list(edge_list_copy_array[strong_locs])
         sim_list_new = list(sim_list_array[strong_locs])
 
-        G_sim = ig.Graph(list(new_edgelist), edge_attrs={'weight': sim_list_new})
+        # Modification by Eli Zunder, 10/26/2019.  Add vertices during graph
+        # construction, to prevent vertex loss if too many edges are pruned.
+        # (Previous version built graph from edgelist only).
+        G_sim = ig.Graph(n=n_elements, edges=list(new_edgelist),
+                         edge_attrs={'weight': sim_list_new})
+        # End modification by Eli Zunder, 10/26/2019---------------------------
+        
         #print('average degree of graph is %.1f' % (np.mean(G_sim.degree())))
         G_sim.simplify(combine_edges='sum')  # "first"
         #print('average degree of SIMPLE graph is %.1f' % (np.mean(G_sim.degree())))
