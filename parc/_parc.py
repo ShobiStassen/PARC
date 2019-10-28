@@ -127,9 +127,9 @@ class PARC:
         sim_list_new = list(sim_list_array[strong_locs])
 
         if jac_weighted_edges == True:
-            G_sim = ig.Graph(list(new_edgelist), edge_attrs={'weight': sim_list_new})
+            G_sim = ig.Graph(n=n_elements, list(new_edgelist), edge_attrs={'weight': sim_list_new})
         else:
-            G_sim = ig.Graph(list(new_edgelist))
+            G_sim = ig.Graph(n=n_elements, list(new_edgelist))
         G_sim.simplify(combine_edges='sum')
         if jac_weighted_edges == True:
             partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
