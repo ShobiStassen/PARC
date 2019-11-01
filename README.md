@@ -82,15 +82,15 @@ import csv
 X = csv.reader(open("'./pca50_pbmc68k.txt", 'rt'),delimiter = ",")
 X = np.array(list(X)) // (n_obs x k_dim, 68579 x 50)
 X = X.astype("float")
-// OR with pandas as: X = pd.read_csv("'./pca50_pbmc68k.txt").values.astype("float")
+// OR with pandas as: X = pd.read_csv("'./pca50_pbmc68k.txt", header=None).values.astype("float")
 
 y = [] // annotations
 with open('/annotations_zhang.txt', 'rt') as f: 
     for line in f: y.append(line.strip().replace('\"', ''))
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
-
-parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15, random_seed =1) // instantiate PARC
+// setting small_pop to 50 cleans up some of the smaller clusters, but can also be left at the default 10
+parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15, random_seed =1, small_pop = 50) // instantiate PARC
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels 
 ```
@@ -120,7 +120,8 @@ adata.obs['annotations'] = pd.Categorical(annotations)
 //pre-process as per Zheng et al., and take first 50 PCs for analysis
 sc.pp.recipe_zheng17(adata)
 sc.tl.pca(adata, n_comps=50)
-parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations, random_seed =1) 
+// setting small_pop to 50 cleans up some of the smaller clusters, but can also be left at the default 10
+parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations, jac_std_global=0.15, random_seed =1, small_pop = 50)  
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
 adata2.obs["PARC"] = pd.Categorical(parc_labels)
