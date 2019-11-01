@@ -121,6 +121,7 @@ adata.obs['annotations'] = pd.Categorical(annotations)
 sc.pp.recipe_zheng17(adata)
 sc.tl.pca(adata, n_comps=50)
 parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations, random_seed =1) 
+parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
 adata2.obs["PARC"] = pd.Categorical(parc_labels)
 
@@ -143,15 +144,17 @@ import parc
 import pandas as pd
 
 // load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells x 26 features)
-X = pd.read_csv("'./LungData.txt").values.astype("float") 
+X = pd.read_csv("'./LungData.txt", header=None).values.astype("float") 
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
 // run PARC on 1.1M and 70K cells
 parc1 = parc.PARC(X, true_label=y)
+parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
 
 // run PARC on H1975 spiked cells
 parc2 = parc.PARC(X, true_label=y, jac_std_global = 0.15) // 0.15 corresponds to pruning ~60% edges and can be effective for rarer populations than the default 'median'
+parc2.run_PARC() // run the clustering
 parc_labels_rare = parc2.labels
 
 ```
