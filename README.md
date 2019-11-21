@@ -144,7 +144,7 @@ sc.pl.umap(adata, color='PARC')
 import parc
 import pandas as pd
 
-// load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells x 26 features)
+// load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells)
 X = pd.read_csv("'./LungData.txt", header=None).values.astype("float") 
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
