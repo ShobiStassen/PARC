@@ -76,16 +76,18 @@ parc_labels = Parc2.labels
 ```
 import parc
 import csv
+import numpy as np
+import pandas as pd
 
 ## load data (50 PCs of filtered gene matrix pre-processed as per Zheng et al. 2017)
 
-X = csv.reader(open("'./pca50_pbmc68k.txt", 'rt'),delimiter = ",")
+X = csv.reader(open("./pca50_pbmc68k.txt", 'rt'),delimiter = ",")
 X = np.array(list(X)) // (n_obs x k_dim, 68579 x 50)
 X = X.astype("float")
 // OR with pandas as: X = pd.read_csv("'./pca50_pbmc68k.txt", header=None).values.astype("float")
 
 y = [] // annotations
-with open('/annotations_zhang.txt', 'rt') as f: 
+with open('./annotations_zhang.txt', 'rt') as f: 
     for line in f: y.append(line.strip().replace('\"', ''))
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
@@ -121,12 +123,15 @@ adata.obs['annotations'] = pd.Categorical(annotations)
 sc.pp.recipe_zheng17(adata)
 sc.tl.pca(adata, n_comps=50)
 // setting small_pop to 50 cleans up some of the smaller clusters, but can also be left at the default 10
-parc1 = parc.PARC(adata2.obsm['X_pca'], true_label = annotations, jac_std_global=0.15, random_seed =1, small_pop = 50)  
+parc1 = parc.PARC(adata.obsm['X_pca'], true_label = annotations, jac_std_global=0.15, random_seed =1, small_pop = 50)  
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
 adata2.obs["PARC"] = pd.Categorical(parc_labels)
 
 //visualize
+sc.settings.n_jobs=4
+sc.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
+sc.tl.umap(adata)
 sc.pl.umap(adata, color='annotations')
 sc.pl.umap(adata, color='PARC')
 ```
