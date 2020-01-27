@@ -100,7 +100,8 @@ parc_labels = parc1.labels
 
 ## Example Usage 3. 10X PBMC (Zheng et al., 2017) integrating Scanpy pipeline
 
-[raw datafile](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
+[raw datafile 68K pbmc from github page](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
+[10X compressed file "filtered genes"](http://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz)
 
 ```
 pip install scanpy
@@ -110,7 +111,7 @@ pip install scanpy
 import scanpy.api as sc
 import pandas as pd
 //load data
-path = './data/zheng17_filtered_matrices_mex/hg19/'
+path = './data/filtered_matrices_mex/hg19/'
 adata = sc.read(path + 'matrix.mtx', cache=True).T  # transpose the data
 adata.var_names = pd.read_csv(path + 'genes.tsv', header=None, sep='\t')[1]
 adata.obs_names = pd.read_csv(path + 'barcodes.tsv', header=None)[0]
@@ -126,7 +127,7 @@ sc.tl.pca(adata, n_comps=50)
 parc1 = parc.PARC(adata.obsm['X_pca'], true_label = annotations, jac_std_global=0.15, random_seed =1, small_pop = 50)  
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
-adata2.obs["PARC"] = pd.Categorical(parc_labels)
+adata.obs["PARC"] = pd.Categorical(parc_labels)
 
 //visualize
 sc.settings.n_jobs=4
