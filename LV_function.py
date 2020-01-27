@@ -9,6 +9,8 @@ import sys
 import LargeVis
 import numpy as np
 import time
+from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
 
 import scipy.io
 import pandas as pd
@@ -18,7 +20,7 @@ from MST_clustering_mergetooclose import MSTClustering
 import time
 from sklearn import metrics
 from scipy import stats
-
+from MulticoreTSNE import MulticoreTSNE as multicore_tsne
 
 # 0: no fluor
 # 1: only fluor
@@ -314,6 +316,42 @@ def run_mctsne(version, input_data, perplexity, lr, new_file_name, new_folder_na
                header=str(int(X_embedded.shape[0])) + ' ' + str(int(X_embedded.shape[1])), fmt="%f", delimiter=" ")
     return X_embedded, embedding_filename, time_elapsed
 
+def run_dbscan(X_embedded, n_cancer, true_label, data_version, tsne_version, embedding_filename, tsne_runtime):
+    list_roc = []
+    sigma_list = [0.5]
+    if n_cancer > 1000:
+        cluster_size_list = [20]
+    else:
+        cluster_size_list = [15]
+    iclus = 0
+    for i_sigma in sigma_list:
+        for i_cluster_size in cluster_size_list:
+            print('Starting DBSCAN', time.ctime())
+            model = DBSCAN(eps = i_sigma, min_samples = i_cluster_size).fit(X_embedded)
+            time_start = time.time()
+            mst_runtime = time.time() - time_start
+            print('DBSCAN Done! Time elapsed: {:.2f} seconds'.format(mst_runtime),
+                  'tsne version {}'.format(tsne_version), 'data version {}'.format(data_version),
+                  'sigma {}'.format(i_sigma), 'and min cluster {}'.format(i_cluster_size))
+            vals_roc, predict_class_array = accuracy_mst(i_sigma, i_cluster_size, model, true_label[:, 0], X_embedded,
+                                                         embedding_filename, merge=1)
+            list_roc.append(vals_roc + [tsne_runtime])
+
+            if iclus == 0:
+                predict_class_aggregate = np.array(predict_class_array)
+            else:
+                predict_class_aggregate = np.vstack((predict_class_aggregate, predict_class_array))
+
+            iclus = 1
+    df_accuracy = pd.DataFrame(list_roc,
+                               columns=['embedding filename', 'eps', 'min cluster size', 'f1-score', 'tnr', 'fnr',
+                                        'tpr', 'fpr', 'precision', 'recall', 'num_groups', 'clustering runtime',
+                                        'tsne runtime'])
+
+    sigma_opt = df_accuracy['sigma'][df_accuracy['f1-score'].idxmax()]
+    min_cluster_size_opt = df_accuracy['min cluster size'][df_accuracy['f1-score'].idxmax()]
+    return predict_class_aggregate, df_accuracy, sigma_opt, min_cluster_size_opt
+
 
 def run_mstclustering(X_embedded, n_cancer, true_label, data_version, tsne_version, embedding_filename, tsne_runtime):
     list_roc = []
@@ -366,11 +404,9 @@ def run_mstclustering(X_embedded, n_cancer, true_label, data_version, tsne_versi
     return predict_class_aggregate, predict_class_aggregate_nomerge, df_accuracy, df_accuracy_nomerge, sigma_opt, min_cluster_size_opt
 
 
-def accuracy_mst(sigma_roc, min_cluster_size_roc, model, true_labels, X_data_array, embedding_filename, merge):
+def accuracy_mst(sigma_roc, min_cluster_size_roc, model, true_labels, embedding_filename, merge=1):
     X_dict = {}
-    X_dict_dbscan = {}
     Index_dict = {}
-    Index_dict_dbscan = {}
     X = model.X_fit_
     print(X.shape)
     if merge == 1:
@@ -453,7 +489,7 @@ def accuracy_mst(sigma_roc, min_cluster_size_roc, model, true_labels, X_data_arr
     return accuracy_val, predict_class_array
 
 
-def plot_mst_simple(model, true_labels, X_data_array, embedding_filename, sigma, min_cluster, cancer_type, merge):
+def plot_mst_simple(model, true_labels, X_data_array, embedding_filename, sigma, min_cluster, cancer_type, merge=1):
     # http://nbviewer.jupyter.org/github/jakevdp/mst_clustering/blob/master/MSTClustering.ipynb
 
     X_dict = {}
@@ -667,7 +703,7 @@ def auc_accuracy(df_roc):
 
 def main():
     perplexity = 30
-    n_cancer = 300
+    n_cancer = 1000
     ratio = 1
     n_total = n_cancer + (ratio * n_cancer)
     '''
@@ -676,8 +712,6 @@ def main():
     if n_total <100000: lr = 1000
 
     '''
-
-
     cancer_type = 'k562'
     benign_type = 'pbmc'
     fluor = 0
@@ -687,9 +721,11 @@ def main():
     tsne_version_range = range(num_tsne_versions)
     list_accuracy_opt0 = []
     list_accuracy_opt1 = []
+    list_accuracy_opt_dbscan = []
     fn_tag_list = []
     fp_tag_list = []
     pred_list = []
+    pred_list_dbscan = []
     lr_range = [0.5, 1, 1.5, 2]
 
     new_folder_name = cancer_type + '_r' + str(ratio) + '_n' + str(n_cancer)
@@ -709,54 +745,67 @@ def main():
                                                                           new_file_name, new_folder_name)
                 predict_class_aggregate, predict_class_aggregate_nomerge, df_accuracy, df_accuracy_nomerge, sigma_opt, min_cluster_size_opt = run_mstclustering(
                     X_embedded, n_cancer, true_label, dataset_version, tsne_version, embedding_filename, tsne_runtime)
-                auc_pr_val, auc_roc_val = auc_accuracy(df_accuracy)
-                auc_pr_val_nomerge, auc_roc_val_nomerge = auc_accuracy(df_accuracy_nomerge)
-                auc_list = [auc_pr_val, auc_roc_val, tsne_runtime]
-                auc_list_nomerge = [auc_pr_val_nomerge, auc_roc_val_nomerge, tsne_runtime]
+                predict_class_aggregate_dbscan, df_accuracy_dbscan, eps_opt, min_cluster_size_opt_dbscan = run_dbscan(
+                    X_embedded, n_cancer, true_label, dataset_version, tsne_version, embedding_filename, tsne_runtime)
+
+                auc_list = [auc_accuracy(df_accuracy), tsne_runtime]
+                auc_list_nomerge = [auc_accuracy(df_accuracy_nomerge), tsne_runtime]
+                auc_list_dbscan = [auc_accuracy(df_accuracy_dbscan), tsne_runtime]
+
                 if tsne_version == 0:
                     print(tsne_version, 'agg')
                     predict_class_aggregate_all = predict_class_aggregate
                     print('shape of predict_class_aggregate', predict_class_aggregate_all.shape)
                     predict_class_aggregate_all_nomerge = predict_class_aggregate_nomerge
+                    predict_class_aggregate_all_dbscan = predict_class_aggregate_dbscan
 
                 # if dataset_version ==0 and tsne_version==0:
                 if lr == lr_range[0] and tsne_version == 0:
                     df_all_merge = df_accuracy
                     df_all_nomerge = df_accuracy_nomerge
+                    df_all_dbscan = df_accuracy_dbscan
                 else:
-                    frames = [df_all_merge, df_accuracy]
-                    df_all_merge = pd.concat(frames, ignore_index=True)
-                    frames_nomerge = [df_all_nomerge, df_accuracy_nomerge]
-                    df_all_nomerge = pd.concat(frames_nomerge, ignore_index=True)
-
+                    df_all_merge = pd.concat([df_all_merge, df_accuracy], ignore_index=True)
+                    df_all_nomerge = pd.concat([df_all_nomerge, df_accuracy_nomerge], ignore_index=True)
+                    df_all_dbscan = pd.concat([df_all_dbscan, df_accuracy_dbscan], ignore_index=True)
                 if tsne_version != 0:
                     predict_class_aggregate_all = np.vstack((predict_class_aggregate_all, predict_class_aggregate))
                     predict_class_aggregate_all_nomerge = np.concatenate(
                         (predict_class_aggregate_all_nomerge, predict_class_aggregate_nomerge), axis=0)
+                    predict_class_aggregate_all_dbscan = np.vstack((predict_class_aggregate_all_dbscan, predict_class_aggregate_dbscan))
                     print(dataset_version, tsne_version, 'd and t version')
 
                 model = MSTClustering(cutoff_scale=0.3, approximate=True, min_cluster_size=min_cluster_size_opt,
                                       sigma_factor=sigma_opt)
                 model.fit_predict(X_embedded)
-                # data_lasso = [Datum(*xy,z,t) for xy,z,t in zip(X_embedded,true_label,tag)]
+                model_dbscan = DBSCAN(X_embedded,eps_opt, min_cluster_size_opt_dbscan).fit(X_embedded)
                 list_accuracy_opt1.append(
                     plot_mst_simple(model, true_label[:, 0], X_embedded, embedding_filename, sigma_opt,
                                     min_cluster_size_opt, cancer_type, merge=1) + auc_list)
                 list_accuracy_opt0.append(
                     plot_mst_simple(model, true_label[:, 0], X_embedded, embedding_filename, sigma_opt,
                                     min_cluster_size_opt, cancer_type, merge=0) + auc_list_nomerge)
+                list_accuracy_opt_dbscan.append(
+                    plot_mst_simple(model_dbscan, true_label[:, 0], X_embedded, embedding_filename, eps_opt,
+                                    min_cluster_size_opt_dbscan, cancer_type, merge=1) + auc_list_dbscan)
             print(predict_class_aggregate_all.shape, 'predict_agg_all shape')
             predict_class_final = stats.mode(predict_class_aggregate_all)[0]
-            predict_class_final_nomerge = stats.mode(predict_class_aggregate_all_nomerge)[0]
+            predict_class_final_dbscan = stats.mode(predict_class_aggregate_all_dbscan)[0]
             print('mode of predictions has shape ', predict_class_final.shape)
             summary_simple_acc, fp_tags, fn_tags = simple_accuracy(predict_class_final, true_label, dataset_version,
                                                                    index_list, df_all)
+            summary_simple_acc_dbscan, fp_tags_dbscan, fn_tags_dbscan = simple_accuracy(predict_class_final_dbscan, true_label, dataset_version,
+                                                                   index_list, df_all_dbscan)
             pred_list.append([lr] + summary_simple_acc)
+            pred_list_dbscan.append([lr] + summary_simple_acc_dbscan)
             fp_tag_list.append(fp_tags)
             fn_tag_list.append(fn_tags)
         df_fp_tags = pd.DataFrame(fp_tag_list)
         df_fn_tags = pd.DataFrame(fn_tag_list)
         df_mode = pd.DataFrame(pred_list,
+                               columns=['learning rate', 'data version', 'f1-score', 'tnr', 'fnr', 'tpr', 'fpr',
+                                        'precision', 'recall', 'error_rate', 'computed_ratio'])
+        df_mode_dbscan = pd.DataFrame(pred_list_dbscan,
                                columns=['learning rate', 'data version', 'f1-score', 'tnr', 'fnr', 'tpr', 'fpr',
                                         'precision', 'recall', 'error_rate', 'computed_ratio'])
         df_accuracy_opt1 = pd.DataFrame(list_accuracy_opt1,
@@ -773,10 +822,11 @@ def main():
         writer = pd.ExcelWriter(excel_file_name)
         df_all_merge.to_excel(writer, 'All')
         df_all_nomerge.to_excel(writer, 'All_nomerge')
-        df_accuracy_opt1.to_excel(writer, 'merged_too_close')
+        df_accuracy_opt1.to_excel(writer, 'merged_too_close') #best tsne run for each dataset (with merging)
         df_accuracy_opt0.to_excel(writer, 'no_merging')
-        df_mode.to_excel(writer, 'Mode')
-        df_fn_tags.to_excel(writer, 'fn tags')
+        df_mode.to_excel(writer, 'Mode') #one mode per dataset run
+        df_mode_dbscan.to_excel(writer, 'DBSCAN Mode')  # one mode per dataset run
+        df_fn_tags.to_excel(writer, 'fn tags') #per mode
         df_fp_tags.to_excel(writer, 'fp tags')
         writer.save()
 

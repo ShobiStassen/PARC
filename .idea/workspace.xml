@@ -1,12 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/LungCancer_function_minClusters.py" line="77" mnemonic="4" />
+    <bookmark url="file://$PROJECT_DIR$/10X_TCell.py" line="85" mnemonic="7" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5ecf3a57-f21a-4e3d-a1c0-84729f65a51f" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/LV_function.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MST_clustering_mergetooclose.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PBMCsubtypes_function.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shobi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/10X_TCell.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/10X_mousebrain.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ALPH_Jan14.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ALPH_paper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APT_Runtime.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alph_april2019.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BHMC_function.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CYTOF_ndimAPT.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyTOF_tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyTOF_tests_main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LouvainTest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_Jac15Oct.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_Jac24Sept.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_aug30.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_old.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_sep8.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_igraph_veryold.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Louvain_shobi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LungCancer_function.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LungCancer_function_minClusters.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LungCancer_function_minClusters_savedAug30.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LungCancer_function_minClusters_sep10.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_2D.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_4Oct.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_Oct25.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_current.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_hidimensionmerging_experiments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_ndim.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_3D_sep13.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_APTSOM.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MST_minClusters.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NeuralNetwork_LungCancer_v0.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PARC_Jun2019.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Performance_minClusters_rarecell.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Performance_perplexity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Performance_phenograph.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot_features.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plotting_3D.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TenEX_68K_PBMC_v1aug.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/alph_leiden.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back_up Louvain_igraph_Jac24Sept_May8version.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup_Louvain_igraphJac24sept.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup_louvain_igraph_Jac24Sept.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup_louvain_igraph_May20.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup_louvain_igraph_May20_PM.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/box_plots_GoldStandard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boxplot_paper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cluster_mouse_brain.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/densityplots" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/densityplots.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example_images.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mnist_performance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiclass_pbmc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/oct232019_backup_Louvain_igraph_Jac24sept.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_figures.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/performance_addKMEANS.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/performance_addKmeans" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/performance_modifiedDBSCAN.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/performance_optimized.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plot_pbmc_mixture_10x.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_PARC_examples.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_SpikeJan2020.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing_openpyxl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing_sompy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/whisker_box.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/whisker_box_paper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LV_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/LV_function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MST_clustering_mergetooclose.py" beforeDir="false" afterPath="$PROJECT_DIR$/MST_clustering_mergetooclose.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PBMCsubtypes_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/PBMCsubtypes_function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annoy_index_file" beforeDir="false" afterPath="$PROJECT_DIR$/annoy_index_file" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,63 +91,109 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test.py">
+      <file leaf-file-name="Louvain_igraph_Jac24Sept.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Louvain_igraph_Jac24Sept.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="26" selection-start-line="26" selection-end-line="36" selection-end-column="7" />
+            <state relative-caret-position="750">
+              <caret line="467" column="79" lean-forward="true" selection-start-line="467" selection-start-column="79" selection-end-line="467" selection-end-column="79" />
               <folding>
-                <element signature="e#1219#1230#0" expanded="true" />
+                <element signature="e#0#34#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MST_clustering_mergetooclose.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MST_clustering_mergetooclose.py">
+      <file leaf-file-name="PARC.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PARC.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5550">
-              <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
+            <state relative-caret-position="60">
+              <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_PARC_examples.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_PARC_examples.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1035">
+              <caret line="69" column="116" selection-start-line="69" selection-start-column="112" selection-end-line="69" selection-end-column="116" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_SpikeJan2020.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_SpikeJan2020.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
               <folding>
-                <element signature="e#41#72#0" expanded="true" />
+                <element signature="e#0#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LV_function.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LV_function.py">
+      <file leaf-file-name="TenEX_68K_PBMC_v1aug.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TenEX_68K_PBMC_v1aug.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-169">
-              <caret line="576" column="155" selection-start-line="576" selection-start-column="12" selection-end-line="576" selection-end-column="155" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PBMCsubtypes_function.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PBMCsubtypes_function.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="236" column="27" selection-start-line="236" selection-start-column="27" selection-end-line="236" selection-end-column="27" />
+            <state relative-caret-position="4860">
+              <caret line="337" column="1" selection-start-line="337" selection-start-column="1" selection-end-line="337" selection-end-column="1" />
               <folding>
-                <element signature="e#248#356#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shobi.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shobi.py">
+      <file leaf-file-name="CyTOF_tests_main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CyTOF_tests_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+            <state relative-caret-position="9825">
+              <caret line="666" column="169" selection-start-line="666" selection-start-column="164" selection-end-line="666" selection-end-column="169" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dont_commit.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dont_commit.py">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file leaf-file-name="paper_figures.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paper_figures.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1215">
+              <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LungCancer_function_minClusters_sep10.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LungCancer_function_minClusters_sep10.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1920">
+              <caret line="138" column="100" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="100" />
+              <folding>
+                <element signature="e#211#319#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="whisker_box_paper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/whisker_box_paper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="box_plots_GoldStandard.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/box_plots_GoldStandard.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -88,12 +207,69 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bh</find>
-      <find>barn</find>
-      <find>print(</find>
-      <find>short</find>
-      <find>k562</find>
+      <find>elaps</find>
+      <find>elapse</find>
+      <find>kdim</find>
+      <find>PARC</find>
+      <find>time</find>
+      <find>elapsed</find>
+      <find>elap</find>
+      <find>PARC to</find>
+      <find>ari for</find>
+      <find>10,1</find>
+      <find>knn=5</find>
+      <find>run_ph</find>
+      <find>start p</find>
+      <find>v2</find>
+      <find>pheno_</find>
+      <find>knn_in</find>
+      <find>pca</find>
+      <find>VolO</find>
+      <find>ALPH</find>
+      <find>4un</find>
+      <find>too_sm</find>
+      <find>variance</find>
+      <find>coun</find>
+      <find>csv</find>
+      <find>true_</find>
+      <find>majorit</find>
+      <find>run_m</find>
+      <find>norm</find>
+      <find>had f</find>
+      <find>has error</find>
     </findStrings>
+    <replaceStrings>
+      <replace>knn</replace>
+      <replace>accuracy</replace>
+      <replace>_labels</replace>
+      <replace>n_target</replace>
+      <replace>n_not_target</replace>
+      <replace>jac_std</replace>
+      <replace>true_label</replace>
+      <replace>.mean</replace>
+      <replace>.max</replace>
+      <replace>.mean(</replace>
+      <replace>mean</replace>
+      <replace>.max(</replace>
+      <replace>May20PM</replace>
+      <replace>66.5</replace>
+      <replace>alph_labels</replace>
+      <replace>,</replace>
+      <replace>iter15</replace>
+      <replace>run_mainPARC</replace>
+      <replace>PARC_labels</replace>
+      <replace>run_PARC</replace>
+      <replace>hard</replace>
+      <replace>All</replace>
+      <replace>M3Drop10</replace>
+      <replace>Expr10</replace>
+      <replace>Zheng4eq</replace>
+      <replace>8eq</replace>
+      <replace>4uneq</replace>
+      <replace>4eq</replace>
+      <replace>Kumar</replace>
+      <replace>PARC</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -101,19 +277,64 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/dont_commit.py" />
-        <option value="$PROJECT_DIR$/chris.py" />
-        <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/MST_clustering_mergetooclose.py" />
-        <option value="$PROJECT_DIR$/LV_function.py" />
+        <option value="$PROJECT_DIR$/MST_3D_sep13.py" />
+        <option value="$PROJECT_DIR$/Louvain_igraph.py" />
+        <option value="$PROJECT_DIR$/10x_68K_PBMC_v1aug.py" />
+        <option value="$PROJECT_DIR$/MST_3D.py" />
+        <option value="$PROJECT_DIR$/testing_sompy.py" />
+        <option value="$PROJECT_DIR$/MST_3D_asonOct4.py" />
+        <option value="$PROJECT_DIR$/MST_3D_4Oct.py" />
+        <option value="$PROJECT_DIR$/Louvain_igraph_Jac15Oct.py" />
+        <option value="$PROJECT_DIR$/MST_APTSOM.py" />
+        <option value="$PROJECT_DIR$/APT_Runtime.py" />
+        <option value="$PROJECT_DIR$/MST_3D_Oct25.py" />
+        <option value="$PROJECT_DIR$/backup Louvain_igraphJac24sept.py" />
+        <option value="$PROJECT_DIR$/CYTOF_ndimAPT.py" />
+        <option value="$PROJECT_DIR$/backup_Louvain_igraphJac24sept.py" />
+        <option value="$PROJECT_DIR$/ALPH_Jan14.py" />
         <option value="$PROJECT_DIR$/PBMCsubtypes_function.py" />
+        <option value="$PROJECT_DIR$/cluster_mouse_brain.py" />
+        <option value="$PROJECT_DIR$/violinplot_paper.py" />
+        <option value="$PROJECT_DIR$/Performance_phenograph.py" />
+        <option value="$PROJECT_DIR$/heatmaps_article1.py" />
+        <option value="$PROJECT_DIR$/MST_3D_current.py" />
+        <option value="$PROJECT_DIR$/whisker_box.py" />
+        <option value="$PROJECT_DIR$/Alph_april2019.py" />
+        <option value="$PROJECT_DIR$/backup_louvain_igraph_Jac24Sept.py" />
+        <option value="$PROJECT_DIR$/alph_leiden.py" />
+        <option value="$PROJECT_DIR$/backup_louvain_igraph_May20.py" />
+        <option value="$PROJECT_DIR$/backup_louvain_igraph_May20_PM.py" />
+        <option value="$PROJECT_DIR$/back_up Louvain_igraph_Jac24Sept_May8version.py" />
+        <option value="$PROJECT_DIR$/Plotting_3D.py" />
+        <option value="$PROJECT_DIR$/ALPH_paper.py" />
+        <option value="$PROJECT_DIR$/NeuralNetwork_LungCancer_v0.py" />
+        <option value="$PROJECT_DIR$/plot_pbmc_mixture_10x.py" />
+        <option value="$PROJECT_DIR$/boxplot_paper.py" />
+        <option value="$PROJECT_DIR$/PARC_Aug2019.py" />
+        <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/MST_3D_ndim.py" />
+        <option value="$PROJECT_DIR$/../Via/Viav010.py" />
+        <option value="$PROJECT_DIR$/oct232019_backup_Louvain_igraph_Jac24sept.py" />
+        <option value="$PROJECT_DIR$/10X_mousebrain.py" />
+        <option value="$PROJECT_DIR$/10X_TCell.py" />
+        <option value="$PROJECT_DIR$/whisker_box_paper.py" />
+        <option value="$PROJECT_DIR$/paper_figures.py" />
+        <option value="$PROJECT_DIR$/CyTOF_tests_main.py" />
+        <option value="$PROJECT_DIR$/LungCancer_function_minClusters_sep10.py" />
+        <option value="$PROJECT_DIR$/test_PARC_examples.py" />
+        <option value="$PROJECT_DIR$/TenEX_68K_PBMC_v1aug.py" />
+        <option value="$PROJECT_DIR$/box_plots_GoldStandard.py" />
+        <option value="$PROJECT_DIR$/PARC.py" />
+        <option value="$PROJECT_DIR$/Louvain_igraph_Jac24Sept.py" />
+        <option value="$PROJECT_DIR$/test_SpikeJan2020.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="67" />
+    <option name="x" value="1182" />
     <option name="y" value="24" />
-    <option name="width" value="1887" />
+    <option name="width" value="1884" />
     <option name="height" value="1576" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -123,27 +344,18 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="my_first_conda_project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="my_first_conda_project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="my_first_conda_project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/cuda-workspace/LargeVis_Shobi/LargeVis-master/Linux" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/shobi/PycharmProjects/my_first_conda_project/Louvain_igraph_Jac24Sept.py" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Via/Viav010.py" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -157,8 +369,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.LV_function">
-    <configuration name="LV_function" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.test_SpikeJan2020">
+    <configuration name="CyTOF_tests_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_first_conda_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -170,13 +382,13 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LV_function.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CyTOF_tests_main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="MST_clustering_mergetooclose" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="LungCancer_function_minClusters_sep10" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_first_conda_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -188,13 +400,13 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MST_clustering_mergetooclose.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LungCancer_function_minClusters_sep10.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="shobi" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="TenEX_68K_PBMC_v1aug" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_first_conda_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -206,13 +418,13 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shobi.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TenEX_68K_PBMC_v1aug.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="box_plots_GoldStandard" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_first_conda_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -224,24 +436,44 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/box_plots_GoldStandard.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="test_SpikeJan2020" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="my_first_conda_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_SpikeJan2020.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
     <list>
-      <item itemvalue="Python.test" />
-      <item itemvalue="Python.shobi" />
-      <item itemvalue="Python.MST_clustering_mergetooclose" />
-      <item itemvalue="Python.LV_function" />
+      <item itemvalue="Python.box_plots_GoldStandard" />
+      <item itemvalue="Python.CyTOF_tests_main" />
+      <item itemvalue="Python.TenEX_68K_PBMC_v1aug" />
+      <item itemvalue="Python.LungCancer_function_minClusters_sep10" />
+      <item itemvalue="Python.test_SpikeJan2020" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.LV_function" />
-        <item itemvalue="Python.MST_clustering_mergetooclose" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.shobi" />
+        <item itemvalue="Python.test_SpikeJan2020" />
+        <item itemvalue="Python.box_plots_GoldStandard" />
+        <item itemvalue="Python.TenEX_68K_PBMC_v1aug" />
+        <item itemvalue="Python.LungCancer_function_minClusters_sep10" />
+        <item itemvalue="Python.CyTOF_tests_main" />
       </list>
     </recent_temporary>
   </component>
@@ -259,223 +491,426 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="24" width="1887" height="1576" extended-state="4" />
-    <editor active="true" />
+    <frame x="1182" y="24" width="1884" height="1576" extended-state="4" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18514588" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.13687003" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.16763926" side_tool="true" weight="0.33265167" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.83236074" weight="0.30470347" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="7" visible="true" weight="0.3115201" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.26262626" />
+      <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.48328912" weight="0.49761418" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32992503" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49842766" weight="0.42740285" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32996634" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32992503" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.13687003" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.83236074" visible="true" weight="0.30470347" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49842766" weight="0.42740285" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32992503" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.16763926" side_tool="true" weight="0.33265167" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32992503" />
+      <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.48328912" weight="0.49761418" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/cuda-workspace/Visualization/ndim_smartpath_kgraph.py</url>
+          <line>15</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/MST_3D_4Oct.py</url>
+          <line>3</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="15" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/MST_3D_Oct25.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="26" selection-start-line="26" selection-end-line="36" selection-end-column="7" />
-          <folding>
-            <element signature="e#1219#1230#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="259">
+          <caret line="462" lean-forward="true" selection-end-line="1026" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MST_clustering_mergetooclose.py">
+    <entry file="file://$PROJECT_DIR$/MST_3D_hidimensionmerging_experiments.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5550">
-          <caret line="385" column="35" lean-forward="true" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
-          <folding>
-            <element signature="e#41#72#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="45">
+          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
+    <entry file="file://$PROJECT_DIR$/APT_Runtime.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        <state relative-caret-position="214">
+          <caret line="319" selection-start-line="309" selection-end-line="319" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LV_function.py">
+    <entry file="file://$PROJECT_DIR$/backup_Louvain_igraphJac24sept.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8445">
-          <caret line="576" column="155" lean-forward="true" selection-start-line="576" selection-start-column="12" selection-end-line="576" selection-end-column="155" />
+        <state relative-caret-position="7860">
+          <caret line="552" column="65" selection-start-line="552" selection-start-column="4" selection-end-line="552" selection-end-column="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/ALPH_Jan14.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="60" column="19" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
-          <folding>
-            <element signature="e#1219#1230#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="372">
+          <caret line="389" column="53" selection-start-line="389" selection-start-column="53" selection-end-line="389" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
+    <entry file="file://$PROJECT_DIR$/CYTOF_ndimAPT.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        <state relative-caret-position="282">
+          <caret line="241" column="104" selection-start-line="241" selection-start-column="104" selection-end-line="241" selection-end-column="104" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/cluster_mouse_brain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="e#1219#1230#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="390">
+          <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
+    <entry file="file://$PROJECT_DIR$/BHMC_function.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dont_commit.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shobi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="26" selection-start-line="26" selection-end-line="36" selection-end-column="7" />
-          <folding>
-            <element signature="e#1219#1230#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MST_clustering_mergetooclose.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5550">
-          <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
-          <folding>
-            <element signature="e#41#72#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LV_function.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-169">
-          <caret line="576" column="155" selection-start-line="576" selection-start-column="12" selection-end-line="576" selection-end-column="155" />
+        <state relative-caret-position="6360">
+          <caret line="441" column="77" selection-start-line="441" selection-start-column="77" selection-end-line="441" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PBMCsubtypes_function.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="236" column="27" selection-start-line="236" selection-start-column="27" selection-end-line="236" selection-end-column="27" />
+        <state relative-caret-position="-1554">
+          <caret line="701" column="4" selection-start-line="701" selection-start-column="4" selection-end-line="701" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CyTOF_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Performance_phenograph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16545">
+          <caret line="1125" column="7" selection-start-line="1125" selection-start-column="7" selection-end-line="1125" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/whisker_box.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="53" column="26" lean-forward="true" selection-start-line="53" selection-start-column="26" selection-end-line="53" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Alph_april2019.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8985">
+          <caret line="627" selection-start-line="627" selection-end-line="636" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MST_3D_current.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1845">
+          <caret line="140" column="30" selection-start-line="137" selection-start-column="8" selection-end-line="140" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Louvain_igraph_sep8.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2098">
+          <caret line="451" column="58" lean-forward="true" selection-start-line="451" selection-start-column="58" selection-end-line="451" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alph_leiden.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backup_louvain_igraph_Jac24Sept.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="713">
+          <caret line="770" column="87" selection-start-line="770" selection-start-column="87" selection-end-line="770" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/my_first_conda_project/lib/python3.6/site-packages/sklearn/externals/joblib/parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13560">
+          <caret line="934" column="31" selection-start-line="934" selection-start-column="31" selection-end-line="934" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backup_louvain_igraph_May20_PM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6400">
+          <caret line="1346" column="10" selection-start-line="1346" selection-start-column="10" selection-end-line="1346" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back_up Louvain_igraph_Jac24Sept_May8version.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="605" column="115" selection-start-line="605" selection-start-column="109" selection-end-line="605" selection-end-column="115" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NeuralNetwork_LungCancer_v0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="23" column="45" selection-start-line="23" selection-start-column="45" selection-end-line="23" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/boxplot_paper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1350">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backup_louvain_igraph_May20.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9075">
+          <caret line="633" column="25" selection-start-line="633" selection-start-column="17" selection-end-line="633" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_pbmc_mixture_10x.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4335">
+          <caret line="292" column="10" selection-start-line="292" selection-start-column="10" selection-end-line="292" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../TF_GPU_project/LC_TF_v0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="23" column="19" lean-forward="true" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MST_3D_sep13.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PARC_Jun2019.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="43" column="47" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MST_APTSOM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3719">
+          <caret line="248" column="47" selection-start-line="248" selection-start-column="47" selection-end-line="248" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plotting_3D.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="83" column="14" selection-start-line="83" selection-start-column="9" selection-end-line="83" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MST_3D_ndim.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="96" column="22" selection-start-line="96" selection-start-column="22" selection-end-line="96" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oct232019_backup_Louvain_igraph_Jac24sept.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="66" selection-start-line="1" selection-start-column="66" selection-end-line="1" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Louvain_igraph_aug30.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="99" column="19" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10X_mousebrain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="206" column="5" selection-start-line="206" selection-start-column="5" selection-end-line="206" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ALPH_paper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/densityplots.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10X_TCell.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LungCancer_function_minClusters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="1057" column="124" selection-start-line="1057" selection-start-column="124" selection-end-line="1057" selection-end-column="124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paper_figures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1215">
+          <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TenEX_68K_PBMC_v1aug.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4860">
+          <caret line="337" column="1" selection-start-line="337" selection-start-column="1" selection-end-line="337" selection-end-column="1" />
           <folding>
-            <element signature="e#248#356#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/whisker_box_paper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/box_plots_GoldStandard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Via/Viav010.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1382">
+          <caret line="110" column="48" selection-start-line="110" selection-start-column="48" selection-end-line="110" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PARC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LungCancer_function_minClusters_sep10.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1920">
+          <caret line="138" column="100" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="100" />
+          <folding>
+            <element signature="e#211#319#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CyTOF_tests_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9825">
+          <caret line="666" column="169" selection-start-line="666" selection-start-column="164" selection-end-line="666" selection-end-column="169" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_PARC_examples.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="116" selection-start-line="69" selection-start-column="112" selection-end-line="69" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_SpikeJan2020.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Louvain_igraph_Jac24Sept.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="467" column="79" lean-forward="true" selection-start-line="467" selection-start-column="79" selection-end-line="467" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>

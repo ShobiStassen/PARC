@@ -6,6 +6,7 @@ from __future__ import division
 import numpy as np
 import sys
 
+
 from scipy import sparse
 from scipy.sparse.csgraph import minimum_spanning_tree, connected_components
 from scipy.sparse.csgraph._validation import validate_graph
@@ -17,8 +18,6 @@ from sklearn.neighbors import kneighbors_graph
 from sklearn.metrics import pairwise_distances
 from sklearn.neighbors import KNeighborsClassifier
 from scipy.spatial import distance
-
-
 class MSTClustering(BaseEstimator, ClusterMixin):
     """Minimum Spanning Tree Clustering
 
@@ -70,40 +69,96 @@ class MSTClustering(BaseEstimator, ClusterMixin):
     well-behaved data sets, the result is exact for k << N.
     """
 
-    def __init__(self, cutoff=None, cutoff_scale=None, min_cluster_size=1,
-                 approximate=True, n_neighbors=20,
-                 metric='euclidean', metric_params=None, sigma_factor=1):
-        # self.cutoff = cutoff
-        self.cutoff_scale = cutoff_scale
+    def __init__(self, min_cluster_size=1,
+                 approximate=True, n_neighbors=30,
+                 metric='euclidean', metric_params=None, sigma_factor=2.5,tooclosefactor = 30, maxNumberclusters = 40):
+        #NOTE metric = 'euclidean' is the same as minkowski with p=2
+
+        #self.cutoff_scale = cutoff_scale
         self.min_cluster_size = min_cluster_size
         self.approximate = approximate
         self.n_neighbors = n_neighbors
         self.metric = metric
         self.metric_params = metric_params
         self.sigma_factor = sigma_factor
+        self.tooclosefactor = tooclosefactor
+        self.maxNumberclusters = maxNumberclusters
 
-    def too_close(self, X_dict_mean, X_dict_label, labels, mean):
+    def too_close(self, X_dict_mean, X_dict_label, labels,mean):
+
         updated = False
         for key1 in X_dict_mean.keys():
             # print('key1 is ', key1)
+            mindist = 999
             for key2 in X_dict_mean.keys():
                 (x1, y1) = X_dict_mean[key1][0]
                 (x2, y2) = X_dict_mean[key2][0]
                 coords = [(x1, y1), (x2, y2)]
                 dist = distance.cdist(coords, coords, 'euclidean')[0, 1]
-                if (dist > 0) and (dist < 10 * mean):
-                    idx = np.where(labels == key2)[0]
+                if dist < mindist and dist!=0:
+                    mindist = dist
+                    nn_key = key2
+
+            #print('mindist is ', mindist, 'for key1 and key2', key1, nn_key)
+            if (mindist > 0) and (mindist < self.tooclosefactor * mean) and len(X_dict_mean)!=1:  # 10
+                #print('nn_key of ', key1, 'is ', nn_key)
+                popkey1 = len(X_dict_label[key1])
+                popkeynn = len(X_dict_label[nn_key])
+                #print('pop of keynn', popkeynn)
+                if popkey1 >= popkeynn:
+                    idx = np.where(labels == nn_key)[0]
                     labels[idx] = key1
                     # print(X_dict_label[key1])
                     # print(X_dict_label[key2])
-                    X_dict_label[key1].extend(list(X_dict_label[key2]))
+                    X_dict_label[key1].extend(list(X_dict_label[nn_key]))
                     # print(X_dict_label[key1])
+                    X_dict_label.pop(nn_key, None)
+                    x = [t[0] for t in X_dict_label[key1]]
+                    y = [t[1] for t in X_dict_label[key1]]
+                    X_dict_mean[key1] = [(np.mean(x), np.mean(y))]
+                    X_dict_mean.pop(nn_key, None)
+                    # print('key',key1, 'was too close to key', key2)
+                    updated = True
+                else:
+                    idx = np.where(labels == key1)[0]
+                    labels[idx] = nn_key
+                    # print(X_dict_label[key1])
+                    # print(X_dict_label[key2])
+                    X_dict_label[nn_key].extend(list(X_dict_label[key1]))
+                    # print(X_dict_label[key1])
+                    X_dict_label.pop(key1, None)
+                    x = [t[0] for t in X_dict_label[nn_key]]
+                    y = [t[1] for t in X_dict_label[nn_key]]
+                    X_dict_mean[nn_key] = [(np.mean(x), np.mean(y))]
+                    X_dict_mean.pop(key1, None)
+                    # print('key',key1, 'was too close to key', key2)
+                    updated = True
+                return X_dict_mean, X_dict_label, labels, updated
+        updated = False
+        return X_dict_mean, X_dict_label, labels, updated
+
+    def too_close_old(self, X_dict_mean, X_dict_label, labels,mean):
+        updated = False
+        for key1 in X_dict_mean.keys():
+            #print('key1 is ', key1)
+            for key2 in X_dict_mean.keys():
+                (x1,y1) = X_dict_mean[key1][0]
+                (x2,y2) = X_dict_mean[key2][0]
+                coords = [(x1,y1), (x2,y2)]
+                dist = distance.cdist(coords, coords, 'euclidean')[0,1]
+                if (dist>0) and (dist < self.tooclosefactor*mean): #10
+                    idx = np.where(labels==key2)[0]
+                    labels[idx]=key1
+                    #print(X_dict_label[key1])
+                    #print(X_dict_label[key2])
+                    X_dict_label[key1].extend(list(X_dict_label[key2]))
+                    #print(X_dict_label[key1])
                     X_dict_label.pop(key2, None)
                     x = [t[0] for t in X_dict_label[key1]]
                     y = [t[1] for t in X_dict_label[key1]]
                     X_dict_mean[key1] = [(np.mean(x), np.mean(y))]
                     X_dict_mean.pop(key2, None)
-                    # print('key',key1, 'was too close to key', key2)
+                    #print('key',key1, 'was too close to key', key2)
                     updated = True
                     return X_dict_mean, X_dict_label, labels, updated
         updated = False
@@ -118,9 +173,9 @@ class MSTClustering(BaseEstimator, ClusterMixin):
             the data to be clustered: shape = [n_samples, n_features]
         """
         time_start = time.time()
-        # if self.cutoff is None and self.cutoff_scale is None:
-        if self.cutoff_scale is None:
-            raise ValueError("Must specify either cutoff or cutoff_frac")
+
+        #if self.cutoff_scale is None:
+            #raise ValueError("Must specify either cutoff or cutoff_frac")
 
         # Compute the distance-based graph G from the points in X
         if self.metric == 'precomputed':
@@ -148,6 +203,7 @@ class MSTClustering(BaseEstimator, ClusterMixin):
                                  metric=self.metric,
                                  metric_params=self.metric_params)
 
+
         # HACK to keep explicit zeros (minimum spanning tree removes them)
         zero_fillin = G.data[G.data > 0].min() * 1E-8
         G.data[G.data == 0] = zero_fillin
@@ -160,39 +216,41 @@ class MSTClustering(BaseEstimator, ClusterMixin):
 
         # Partition the data by the cutoff
         N = G.shape[0] - 1
-        # if self.cutoff is None:
-        # i_cut = N
-        # elif 0 <= self.cutoff < 1:
-        # i_cut = int((1 - self.cutoff) * N)
-        # elif self.cutoff >= 1:
-        # i_cut = int(N - self.cutoff)
-        # else:
-        # raise ValueError('self.cutoff must be positive, not {0}'
-        # ''.format(self.cutoff))
+        #if self.cutoff is None:
+            #i_cut = N
+        #elif 0 <= self.cutoff < 1:
+            #i_cut = int((1 - self.cutoff) * N)
+        #elif self.cutoff >= 1:
+            #i_cut = int(N - self.cutoff)
+        #else:
+            #raise ValueError('self.cutoff must be positive, not {0}'
+                             #''.format(self.cutoff))
 
         # create the mask; we zero-out values where the mask is True
         N = len(self.full_tree_.data)
-        mask = np.zeros(N, dtype=bool)  # mask is not true anywhere
-        # if i_cut < 0:
-        # mask = np.ones(N, dtype=bool)
-        # elif i_cut >= N:
-        # elif i_cut >= 0:
-        # mask = np.zeros(N, dtype=bool)
-        # print('not cutting any edges specified by icut param')
-        # else:
-        # mask = np.ones(N, dtype=bool)
-        # part = np.argpartition(self.full_tree_.data, i_cut)
-        # mask[part[:i_cut]] = False
+        mask = np.zeros(N, dtype=bool) #mask is not true anywhere
+        #if i_cut < 0:
+            #mask = np.ones(N, dtype=bool)
+        #elif i_cut >= N:
+        #elif i_cut >= 0:
+            #mask = np.zeros(N, dtype=bool)
+            #print('not cutting any edges specified by icut param')
+        #else:
+            #mask = np.ones(N, dtype=bool)
+            #part = np.argpartition(self.full_tree_.data, i_cut)
+            #mask[part[:i_cut]] = False
 
         # additionally cut values above the ``cutoff_scale``
-        if self.cutoff_scale is not None:
-            d = self.full_tree_.data
-            mu = np.mean(d)
-            sigma = np.std(d)
-            print('mean edge length: ', mu, 'std edge length: ', sigma)
-            mask |= (self.full_tree_.data > (mu + self.sigma_factor * sigma))
-            # mask |= (self.full_tree_.data > self.cutoff_scale)
+        #if self.cutoff_scale is not None:
+        d = self.full_tree_.data
+        mu = np.mean(d)
+        sigma = np.std(d)
+        print('mean edge length: ',mu, 'std edge length: ',sigma)
 
+        mask |= (self.full_tree_.data > (mu + self.sigma_factor*sigma))
+            #mask |= (self.full_tree_.data > self.cutoff_scale)
+        self.mean_edge_distance = mu
+        self.std_edge_distance = sigma
         # Trim the tree
         cluster_graph = self.full_tree_.copy()
 
@@ -213,7 +271,7 @@ class MSTClustering(BaseEstimator, ClusterMixin):
         n_components, labels = connected_components(cluster_graph,
                                                     directed=False)
         print('num connected components:', n_components)
-        # print('labels:', labels )
+        #print('labels:', labels )
 
         # remove clusters with fewer than min_cluster_size
         counts = np.bincount(labels)
@@ -224,8 +282,8 @@ class MSTClustering(BaseEstimator, ClusterMixin):
                 labels[labels == i] = -1
             dummy, labels = np.unique(labels, return_inverse=True)
             labels -= 1  # keep -1 labels the same
-            # print('values of the labels after removing small clusters: ',dummy)
-            # print('index of the label array (above), which we use as the new labels', labels)
+             #print('values of the labels after removing small clusters: ',dummy)
+             #print('index of the label array (above), which we use as the new labels', labels)
         # update cluster_graph by eliminating non-clusters
         # operationally, this means zeroing-out rows & columns where
         # the label is negative.
@@ -242,60 +300,75 @@ class MSTClustering(BaseEstimator, ClusterMixin):
         cluster_graph.eliminate_zeros()
         cluster_graph.data = original_data[cluster_graph.data.astype(int) - 1]
 
-        X_big = X[labels != -1]
-        # print('shape of X_big ',X_big.shape)
-        X_small = X[labels == -1]
-        print('x_small shape: ', X_small.shape)
-        if X_small.shape[0] > 0:
-            labels_big = labels[labels != -1]
+        X_big = X[labels!=-1]
+        #print('shape of X_big ',X_big.shape)
+        X_small = X[labels ==-1]
+        print('x_small shape: ',X_small.shape)
+        if X_small.shape[0] >0:
+            labels_big = labels[labels !=-1]
             neigh = KNeighborsClassifier(n_neighbors=3)
             neigh.fit(X_big, labels_big)
             print('made KneighborClassifier')
             y_small = neigh.predict(X_small)
-            # print('y_small shape:',y_small.shape)
-            y_small_ix = np.where(labels == -1)[0]
-            print('made outlier labels of length', len(y_small_ix))
+            #print('y_small shape:',y_small.shape)
+            y_small_ix = np.where(labels ==-1)[0]
+            #print('made outlier labels of length', len(y_small_ix))
             ii = 0
             for iy in y_small_ix:
                 labels[iy] = y_small[ii]
-                # print(y_small[ii])
-                ii = ii + 1
-
+                #print(y_small[ii])
+                ii=ii+1
+        #print('completed updating labels of length', len(labels))
+        #print('shape of X,' ,X)
+        #print(labels)
         labels_knn_outlier = list(labels)
         X_dict = {}
         X_dict_mean = {}
         X_dict_population = {}
         mean_array = np.empty([n_components, 2])
         Ntot = len(labels)
-
+        #print(X[Ntot-1])
+        #print(labels[Ntot-1])
         for dd in range(len(labels)):
-            x = X[dd, 0]
-            y = X[dd, 1]
+            x = X[dd,0]
+            y = X[dd,1]
+            #print(dd,x,y, labels[dd])
             X_dict.setdefault(labels[dd], []).append((x, y))
 
         num_big_components = len(X_dict)
         print('num_big_components', num_big_components)
         for key in range(num_big_components):
-            # print('key',key)
+            #print('key',key)
             x = [t[0] for t in X_dict[key]]
             y = [t[1] for t in X_dict[key]]
-            mean_array[key, 0] = np.mean(x)
-            mean_array[key, 1] = np.mean(y)
+            mean_array[key,0] = np.mean(x)
+            mean_array[key,1] = np.mean(y)
             X_dict_mean.setdefault(key, []).append((np.mean(x), np.mean(y)))
-            #X_dict_population.setdefault(key, []).append(counts[key])
-        # print('dict of big cluster mean location', X_dict_mean)
+            X_dict_population.setdefault(key, []).append(counts[key])
+        #print('dict of big cluster mean location', X_dict_mean)
         updated = True
+
         while updated == True:
-            X_dict_mean, X_dict, labels, updated = self.too_close(X_dict_mean, X_dict, labels, mu)
+            X_dict_mean,X_dict, labels, updated = self.too_close(X_dict_mean, X_dict, labels, mu)
+        '''
+        while len(set(labels))>self.maxNumberclusters:
+            updated = True
+            self.tooclosefactor = self.tooclosefactor+10
+            print('updated tooclosefactor: ', self.tooclosefactor)
+            while updated == True:
+                X_dict_mean, X_dict, labels, updated = self.too_close(X_dict_mean, X_dict, labels, mu)
+        '''
+        dummy, labels = np.unique(labels, return_inverse=True)
+        print('number of merge groups', len(set(labels)))
         clustering_runtime = time.time() - time_start
-        self.labels_ = labels
-        self.labels_nomerge_ = labels_knn_outlier
+        self.labels_ = labels #final merged labels
+        self.labels_nomerge_ =labels_knn_outlier #before merging
         self.cluster_graph_ = cluster_graph
         self.clustering_runtime_ = clustering_runtime
         return self
 
     def get_graph_segments(self, full_graph=False):
-        """Convenience routine to get graph segments
+        """Convenience routine to get graph segments. currently set for the final merged labels
 
         This is useful for visualization of the graph underlying the algorithm.
 
@@ -327,8 +400,9 @@ class MSTClustering(BaseEstimator, ClusterMixin):
             G = sparse.coo_matrix(self.cluster_graph_)
         labels = self.labels_
         n_labels = len(set(labels))
+        print('nlabels inplot', n_labels)
         X_mean = np.empty([n_features, 2])
-        labels_mean = np.empty([n_labels, 2])
+        labels_mean = np.empty([n_labels,2])
         keep_segment_row_x = []
         keep_segment_col_x = []
         keep_segment_row_y = []
@@ -336,56 +410,56 @@ class MSTClustering(BaseEstimator, ClusterMixin):
         xpairs = []
         ypairs = []
         xpairs_mean = []
-        ypairs_mean = []
+        ypairs_mean= []
 
         for key in set(labels):
-            idx = np.where(labels == key)[0].tolist()
-            # print('idx',idx)
-            x = self.X_fit_[idx, 0]
-            y = self.X_fit_[idx, 1]
-            # print('y',y)
-            labels_mean[key, 0] = np.mean(x)
-            labels_mean[key, 1] = np.mean(y)
+            idx = np.where(labels==key)[0].tolist()
+            #print('idx',idx)
+            x = self.X_fit_[idx,0]
+            y = self.X_fit_[idx,1]
+            #print('y',y)
+            labels_mean[key,0]= np.mean(x)
+            labels_mean[key,1]= np.mean(y)
 
-        # print('mean labels', labels_mean)
-        # for i in n_samples:
-        # X_mean[i,0] = label_means[label[i],0]
-        # X_mean[i,1] = label_means[label[i],1]
+        #print('mean labels', labels_mean)
+        #for i in n_samples:
+            #X_mean[i,0] = label_means[label[i],0]
+            #X_mean[i,1] = label_means[label[i],1]
 
-        shortlist = [i for i in range(len(G.row)) if labels[G.row[i]] != labels[G.col[i]]]
-        print('shortlist', shortlist)
+        shortlist = [i for i in range(len(G.row)) if labels[G.row[i]]!= labels[G.col[i]]]
+        print('shortlist',shortlist)
         for k in shortlist:
             group_pair = (labels[G.row[k]], labels[G.col[k]])
-            # print('group pair', group_pair)
-            xends = [self.X_fit_[G.row[k]][0], self.X_fit_[G.col[k]][0]]
-            yends = [self.X_fit_[G.row[k]][1], self.X_fit_[G.col[k]][1]]
+            #print('group pair', group_pair)
+            xends = [self.X_fit_[G.row[k]][0],self.X_fit_[G.col[k]][0]]
+            yends = [self.X_fit_[G.row[k]][1],self.X_fit_[G.col[k]][1]]
             xpairs.append(xends)
             ypairs.append(yends)
-            xends_mean = [labels_mean[labels[G.row[k]]][0], labels_mean[labels[G.col[k]]][0]]
-            # print('xends mean', xends_mean)
-            yends_mean = [labels_mean[labels[G.row[k]]][1], labels_mean[labels[G.col[k]]][1]]
-            # print('yends mean', yends_mean)
+            xends_mean = [labels_mean[labels[G.row[k]]][0],labels_mean[labels[G.col[k]]][0]]
+            #print('xends mean', xends_mean)
+            yends_mean = [labels_mean[labels[G.row[k]]][1],labels_mean[labels[G.col[k]]][1]]
+            #print('yends mean', yends_mean)
             xpairs_mean.append(xends_mean)
             ypairs_mean.append(yends_mean)
-            # print('ypairs_mean',ypairs_mean)
+            #print('ypairs_mean',ypairs_mean)
         xlist = []
         ylist = []
         xlist_mean = []
         ylist_mean = []
-        for xends, yends in zip(xpairs, ypairs):
+        for xends,yends in zip(xpairs,ypairs):
             xlist.extend(xends)
             xlist.append(None)
             ylist.extend(yends)
             ylist.append(None)
-        # print('xpairs', xpairs_mean)
-        # print('ypairs', ypairs_mean)
-        for xends_mean, yends_mean in zip(xpairs_mean, ypairs_mean):
+        #print('xpairs', xpairs_mean)
+        #print('ypairs', ypairs_mean)
+        for xends_mean,yends_mean in zip(xpairs_mean,ypairs_mean):
             xlist_mean.extend(xends_mean)
             xlist_mean.append(None)
             ylist_mean.extend(yends_mean)
             ylist_mean.append(None)
-        new = tuple((xlist, ylist))
-        new_mean = tuple((xlist_mean, ylist_mean))
-        original = tuple(np.vstack(arrs) for arrs in zip(self.X_fit_[G.row].T, self.X_fit_[G.col].T))
-        # print('new mean', new_mean)
+        new = tuple((xlist,ylist))
+        new_mean = tuple((xlist_mean,ylist_mean))
+        original = tuple(np.vstack(arrs) for arrs in zip(self.X_fit_[G.row].T,self.X_fit_[G.col].T))
+        #print('new mean', new_mean)
         return new_mean

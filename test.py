@@ -21,6 +21,8 @@ https://github.com/lferry007/LargeVis
 import time
 import numpy as np
 import LargeVis
+import os
+print(LargeVis.__file__)
 print('start time is:', time.ctime())
 time_start = time.time()
 
@@ -54,8 +56,9 @@ def format_LVoutput(output_list):
     output_array = np.array(output_list)
     return output_array
 
-LVinput = format_LVinput(input)
-LargeVis.loaddata(LVinput)
+#LVinput = format_LVinput(input)
+#LargeVis.loaddata(LVinput)
+LargeVis.loadgraph('/home/shobi/Documents/LargeVis-master/Examples/CondMat/CondMat_network.txt')
 Y = LargeVis.run(outdim, threads, samples, prop, alpha, trees, neg, neigh, gamma, perp)
 Y_array = format_LVoutput(Y)
 print(Y_array.shape)
