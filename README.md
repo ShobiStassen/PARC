@@ -87,7 +87,7 @@ X = X.astype("float")
 // OR with pandas as: X = pd.read_csv("'./pca50_pbmc68k.txt", header=None).values.astype("float")
 
 y = [] // annotations
-with open('./annotations_zhang.txt', 'rt') as f: 
+with open('./zheng17_annotations.txt', 'rt') as f: 
     for line in f: y.append(line.strip().replace('\"', ''))
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
@@ -101,6 +101,7 @@ parc_labels = parc1.labels
 ## Example Usage 3. 10X PBMC (Zheng et al., 2017) integrating Scanpy pipeline
 
 [raw datafile 68K pbmc from github page](https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis)
+
 [10X compressed file "filtered genes"](http://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz)
 
 ```
