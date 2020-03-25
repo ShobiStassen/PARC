@@ -6,11 +6,11 @@ import igraph as ig
 import leidenalg
 import time
 
-
+#latest github upload 25-March-2020
 class PARC:
     def __init__(self, data, true_label=None, dist_std_local=2, jac_std_global='median', keep_all_local_dist='auto',
                  too_big_factor=0.4, small_pop=10, jac_weighted_edges=True, knn=30, n_iter_leiden=5, random_seed=42,
-                 num_threads=-1, distance='l2', time_smallpop=15):
+                 num_threads=-1, distance='l2', time_smallpop=15, partition_type = "ModularityVP", resolution_parameter = 1.0):
         # higher dist_std_local means more edges are kept
         # highter jac_std_global means more edges are kept
         if keep_all_local_dist == 'auto':
@@ -18,21 +18,24 @@ class PARC:
                 keep_all_local_dist = True  # skips local pruning to increase speed
             else:
                 keep_all_local_dist = False
-
+        if resolution_parameter !=1:
+            partition_type = "RBVP" # Reichardt and Bornholdt’s Potts model. Note that this is the same as ModularityVertexPartition when setting 𝛾 = 1 and normalising by 2m
         self.data = data
         self.true_label = true_label
-        self.dist_std_local = dist_std_local
-        self.jac_std_global = jac_std_global  ##0.15 is also a recommended value performing empirically similar to 'median'
-        self.keep_all_local_dist = keep_all_local_dist
-        self.too_big_factor = too_big_factor  ##if a cluster exceeds this share of the entire cell population, then the PARC will be run on the large cluster. at 0.4 it does not come into play
+        self.dist_std_local = dist_std_local   # similar to the jac_std_global parameter. avoid setting local and global pruning to both be below 0.5 as this is very aggresive pruning.
+        self.jac_std_global = jac_std_global  #0.15 is also a recommended value performing empirically similar to 'median'. Generally values between 0-1.5 are reasonable.
+        self.keep_all_local_dist = keep_all_local_dist #decides whether or not to do local pruning. default is 'auto' which omits LOCAL pruning for samples >300,000 cells.
+        self.too_big_factor = too_big_factor  #if a cluster exceeds this share of the entire cell population, then the PARC will be run on the large cluster. at 0.4 it does not come into play
         self.small_pop = small_pop  # smallest cluster population to be considered a community
-        self.jac_weighted_edges = jac_weighted_edges
+        self.jac_weighted_edges = jac_weighted_edges #boolean. whether to partition using weighted graph
         self.knn = knn
-        self.n_iter_leiden = n_iter_leiden
+        self.n_iter_leiden = n_iter_leiden #the default is 5 in PARC
         self.random_seed = random_seed  # enable reproducible Leiden clustering
         self.num_threads = num_threads  # number of threads used in KNN search/construction
         self.distance = distance  # Euclidean distance 'l2' by default; other options 'ip' and 'cosine'
-        self.time_smallpop = time_smallpop
+        self.time_smallpop = time_smallpop #number of seconds trying to check an outlier
+        self.partition_type = partition_type #default is the simple ModularityVertexPartition where resolution_parameter =1. In order to change resolution_parameter, we switch to RBConfigurationVP
+        self.resolution_parameter = resolution_parameter # defaults to 1. expose this parameter in leidenalg
 
     def make_knn_struct(self, too_big=False, big_cluster=None):
         if self.knn > 190: print('please provide a lower K_in for KNN graph construction')
@@ -159,11 +162,24 @@ class PARC:
             G_sim = ig.Graph(n=n_elements, edges=list(new_edgelist))
         G_sim.simplify(combine_edges='sum')
         if jac_weighted_edges == True:
-            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
+            if self.partition_type =='ModularityVP':
+                partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
+                print('using', self.partition_type, ' modvp')
+            else:
+                partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
+                                                 n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter=self.resolution_parameter)
+                print('using', self.partition_type, 'rbc')
         else:
-            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
+            if self.partition_type == 'ModularityVP':
+                print('using', self.partition_type, ' modvp')
+                partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
+            else:
+                print('using', self.partition_type, 'rbc')
+                partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition,
+                                                     n_iterations=self.n_iter_leiden, seed=self.random_seed,
+                                                     resolution_parameter=self.resolution_parameter)
         # print('Q= %.2f' % partition.quality())
         PARC_labels_leiden = np.asarray(partition.membership)
         PARC_labels_leiden = np.reshape(PARC_labels_leiden, (n_elements, 1))
@@ -259,15 +275,25 @@ class PARC:
         print('commencing community detection')
         if jac_weighted_edges == True:
             start_leiden = time.time()
-            # print('call leiden on weighted graph for ', self.n_iter_leiden, 'iterations')
-            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
+            if self.partition_type =='ModularityVP':
+                print('partition type MVP', self.partition_type)
+                partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
+            else:
+                print('partition type RBC', self.partition_type)
+                partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
+                                                     n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
             print(time.time() - start_leiden)
         else:
             start_leiden = time.time()
-            # print('call leiden on unweighted graph', self.n_iter_leiden, 'iterations')
-            partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
+            if self.partition_type == 'ModularityVP':
+                partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
+                print('partition type MVP', self.partition_type)
+            else:
+                partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition,
+                                                     n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
+                print('partition type RBC', self.partition_type)
             # print(time.time() - start_leiden)
         time_end_PARC = time.time()
         # print('Q= %.1f' % (partition.quality()))
@@ -513,13 +539,13 @@ def main():
     X = iris.data
     y = iris.target
 
-    p1 = PARC(X, true_label=None, too_big_factor=0.1)  # without labels
+    p1 = PARC(X, true_label=None, too_big_factor=0.3, resolution_parameter=1)  # without labels
     p1.run_PARC()
     print(type(p1.labels), p1.stats_df)
     plt.scatter(X[:, 0], X[:, 1], c=y)
 
     # View scatterplot
-    plt.show()
+    #plt.show()
     plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
     plt.show()
 
@@ -528,7 +554,7 @@ def main():
     plt.scatter(X[:, 0], X[:, 1], c=y)
     print(type(p1.labels), p1.stats_df)
     # View scatterplot
-    plt.show()
+    #plt.show()
     plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
     plt.show()
 
