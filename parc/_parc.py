@@ -283,7 +283,7 @@ class PARC:
                 print('partition type RBC')
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
                                                      n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
-            print(time.time() - start_leiden)
+            
         else:
             start_leiden = time.time()
             if self.partition_type == 'ModularityVP':
