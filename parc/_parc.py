@@ -165,18 +165,18 @@ class PARC:
             if self.partition_type =='ModularityVP':
                 partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
-                print('using', self.partition_type, ' modvp')
+                print('partition type MVP')
             else:
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter=self.resolution_parameter)
-                print('using', self.partition_type, 'rbc')
+                print('partition type RBC')
         else:
             if self.partition_type == 'ModularityVP':
-                print('using', self.partition_type, ' modvp')
+                print('partition type MVP')
                 partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
             else:
-                print('using', self.partition_type, 'rbc')
+                print('partition type RBC')
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition,
                                                      n_iterations=self.n_iter_leiden, seed=self.random_seed,
                                                      resolution_parameter=self.resolution_parameter)
@@ -276,11 +276,11 @@ class PARC:
         if jac_weighted_edges == True:
             start_leiden = time.time()
             if self.partition_type =='ModularityVP':
-                print('partition type MVP', self.partition_type)
+                print('partition type MVP')
                 partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition, weights='weight',
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
             else:
-                print('partition type RBC', self.partition_type)
+                print('partition type RBC')
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
                                                      n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
             print(time.time() - start_leiden)
@@ -289,11 +289,11 @@ class PARC:
             if self.partition_type == 'ModularityVP':
                 partition = leidenalg.find_partition(G_sim, leidenalg.ModularityVertexPartition,
                                                  n_iterations=self.n_iter_leiden, seed=self.random_seed)
-                print('partition type MVP', self.partition_type)
+                print('partition type MVP')
             else:
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition,
                                                      n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
-                print('partition type RBC', self.partition_type)
+                print('partition type RBC')
             # print(time.time() - start_leiden)
         time_end_PARC = time.time()
         # print('Q= %.1f' % (partition.quality()))
