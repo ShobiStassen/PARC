@@ -39,10 +39,10 @@ Check out the *new* [Jupyter Notebook](https://github.com/ShobiStassen/PARC/blob
 We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million) 
 
 ### PARC Cluster-level average gene expression
-![]https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png
+![](https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png)
 
 ### PARC visualizes cells by integrating UMAP embedding on the HNSW graph
-![]https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png
+![](https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png)
 
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
