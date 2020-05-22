@@ -14,6 +14,7 @@ python3 setup.py install // cd into the directory of the cloned PARC folder cont
 ```
 
 ### install dependencies separately if needed (linux)
+If the pip install doesn't work, it usually suffices to first install all the requirements (using pip) and subsequently install parc (also using pip)
 ```
 pip install python-igraph, leidenalg, hnswlib
 pip install parc
