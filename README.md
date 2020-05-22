@@ -34,7 +34,7 @@ pip install parc
 ```
 ## NEW Example Usage on Covid-19 scRNA-seq data
 
-Check out the Jupyter Notebook for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9). 
+Check out the *new* [Jupyter Notebook](https://github.com/ShobiStassen/PARC/blob/master/Covid19_Parc.ipynb) for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9). 
 We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million) 
 
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
