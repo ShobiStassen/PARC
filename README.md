@@ -32,6 +32,9 @@ pip install leidenalg-0.7.0-cp36-cp36m-win_amd64.whl
 pip install hnswlib
 pip install parc
 ```
+## NEW Example Usage on Covid-19 scRNA-seq data
+
+Check out the Jupyter Notebook for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9)
 
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
