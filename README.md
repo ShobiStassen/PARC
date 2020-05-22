@@ -38,6 +38,12 @@ pip install parc
 Check out the *new* [Jupyter Notebook](https://github.com/ShobiStassen/PARC/blob/master/Covid19_Parc.ipynb) for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9). 
 We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million) 
 
+### PARC Cluster-level average gene expression
+![]https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png
+
+### PARC visualizes cells by integrating UMAP embedding on the HNSW graph
+![]https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png
+
 ## Example Usage 1. (small test sets) - IRIS and Digits dataset from sklearn
 
 ```
