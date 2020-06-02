@@ -3,6 +3,7 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 
 ## Getting Started
 ### install using pip
+After installation, please double check that the version of leidenalg == 0.7.0. The latest release of leidenalg (0.8.0) is slower for large datasets. 
 ```
 conda create --name ParcEnv pip 
 pip install parc // tested on linux
