@@ -197,6 +197,7 @@ For a more detailed explanation of the impact of tuning key parameters please se
 | `dist_std_local` |  (optional, default = 2) local pruning threshold: the number of standard deviations above the mean minkowski distance between neighbors of a given node. higher value means less pruning|
 | `random_seed` |  (optional, default = 42) The random seed to pass to Leiden|
 | `resolution_parameter` |  (optional, default = 1) Uses ModuliartyVP and RBConfigurationVertexPartition|
+| `jac_weighted_edges` |  (optional, default = True) Uses Jaccard weighted pruned graph as input to community detection. For very large datasets set this to False to observe a speed-up with negligble impact on accuracy |
 
 | Attributes | Description |
 | ---------- |----------|
