@@ -15,8 +15,9 @@ python3 setup.py install // cd into the directory of the cloned PARC folder cont
 
 ### install dependencies separately if needed (linux)
 If the pip install doesn't work, it usually suffices to first install all the requirements (using pip) and subsequently install parc (also using pip)
+We note that the latest version of leidenalg (0.8.0. released April 2020) is significantly slower than its predecessor. Please ensure that the leidenalg installed is version 0.7.0 for the time being.
 ```
-pip install python-igraph, leidenalg, hnswlib, umap-learn
+pip install python-igraph, leidenalg==0.7.0, hnswlib, umap-learn
 pip install parc
 ```
 
@@ -166,13 +167,14 @@ import pandas as pd
 X = pd.read_csv("'./LungData.txt", header=None).values.astype("float") 
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
-// run PARC on 1.1M and 70K cells
-parc1 = parc.PARC(X, true_label=y)
+// run PARC on 1.1M cells
+// jac_weighted_edges can be set to false which provides an unweighted graph to leiden and offers some speedup
+parc1 = parc.PARC(X, true_label=y,jac_weighted_edges = False)
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels
 
 // run PARC on H1975 spiked cells
-parc2 = parc.PARC(X, true_label=y, jac_std_global = 0.15) // 0.15 corresponds to pruning ~60% edges and can be effective for rarer populations than the default 'median'
+parc2 = parc.PARC(X, true_label=y, jac_std_global = 0.15, jac_weighted_edges = False) // 0.15 corresponds to pruning ~60% edges and can be effective for rarer populations than the default 'median'
 parc2.run_PARC() // run the clustering
 parc_labels_rare = parc2.labels
 
