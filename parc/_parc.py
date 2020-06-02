@@ -5,12 +5,13 @@ from scipy.sparse import csr_matrix
 import igraph as ig
 import leidenalg
 import time
+import umap
 
-#latest github upload 25-March-2020
+#latest github upload 2-June-2020
 class PARC:
-    def __init__(self, data, true_label=None, dist_std_local=2, jac_std_global='median', keep_all_local_dist='auto',
+    def __init__(self, data, true_label=None, dist_std_local=3, jac_std_global='median', keep_all_local_dist='auto',
                  too_big_factor=0.4, small_pop=10, jac_weighted_edges=True, knn=30, n_iter_leiden=5, random_seed=42,
-                 num_threads=-1, distance='l2', time_smallpop=15, partition_type = "ModularityVP", resolution_parameter = 1.0):
+                 num_threads=-1, distance='l2', time_smallpop=15, partition_type = "ModularityVP", resolution_parameter = 1.0, knn_struct=None, hnsw_param_ef_construction = 150):
         # higher dist_std_local means more edges are kept
         # highter jac_std_global means more edges are kept
         if keep_all_local_dist == 'auto':
@@ -36,26 +37,27 @@ class PARC:
         self.time_smallpop = time_smallpop #number of seconds trying to check an outlier
         self.partition_type = partition_type #default is the simple ModularityVertexPartition where resolution_parameter =1. In order to change resolution_parameter, we switch to RBConfigurationVP
         self.resolution_parameter = resolution_parameter # defaults to 1. expose this parameter in leidenalg
+        self.knn_struct = knn_struct #the hnsw index of the KNN graph on which we perform queries
+        self.hnsw_param_ef_construction = hnsw_param_ef_construction #set at 150. higher value increases accuracy of index construction. Even for several 100,000s of cells 150-200 is adequate
 
     def make_knn_struct(self, too_big=False, big_cluster=None):
-        if self.knn > 190: print('please provide a lower K_in for KNN graph construction')
-        ef_query = max(100, self.knn + 1)  # ef always should be >K. higher ef, more accuate query
+        if self.knn > 190: print('consider using a lower K_in for KNN graph construction')
+        ef_query = max(100, self.knn + 1)  # ef always should be >K. higher ef, more accurate query
         if too_big == False:
             num_dims = self.data.shape[1]
             n_elements = self.data.shape[0]
             p = hnswlib.Index(space=self.distance, dim=num_dims)  # default to Euclidean distance
             p.set_num_threads(self.num_threads)  # allow user to set threads used in KNN construction
             if n_elements < 10000:
-                ef_param_const = min(n_elements - 10, 500)
-                ef_query = ef_param_const
-                print('setting ef_construction to', )
+                ef_query = min(n_elements - 10, 500)
+                ef_construction = ef_query
             else:
-                ef_param_const = 200
-            if num_dims > 30:
-                p.init_index(max_elements=n_elements, ef_construction=ef_param_const,
+                ef_construction = self.hnsw_param_ef_construction
+            if (num_dims > 30) & (n_elements<=50000) :
+                p.init_index(max_elements=n_elements, ef_construction=ef_construction,
                              M=48)  ## good for scRNA seq where dimensionality is high
             else:
-                p.init_index(max_elements=n_elements, ef_construction=200, M=30, )
+                p.init_index(max_elements=n_elements, ef_construction=ef_construction, M=24 ) #30
             p.add_items(self.data)
         if too_big == True:
             num_dims = big_cluster.shape[1]
@@ -64,50 +66,87 @@ class PARC:
             p.init_index(max_elements=n_elements, ef_construction=200, M=30)
             p.add_items(big_cluster)
         p.set_ef(ef_query)  # ef should always be > k
-        return p
+        self.knn_struct =p
+        return
+
+    def knngraph_full(self):#, neighbor_array, distance_array):
+        k_umap = 15
+        t0= time.time()
+        # neighbors in array are not listed in in any order of proximity
+        self.knn_struct.set_ef(k_umap+1)
+        neighbor_array, distance_array = self.knn_struct.knn_query(self.data, k=k_umap)
+
+        row_list = []
+        n_neighbors = neighbor_array.shape[1]
+        n_cells = neighbor_array.shape[0]
+
+        row_list.extend(list(np.transpose(np.ones((n_neighbors, n_cells)) * range(0, n_cells)).flatten()))
+
+
+        row_min = np.min(distance_array, axis=1)
+        row_sigma = np.std(distance_array, axis=1)
+
+        distance_array = (distance_array - row_min[:,np.newaxis])/row_sigma[:,np.newaxis]
+
+        col_list = neighbor_array.flatten().tolist()
+        distance_array = distance_array.flatten()
+        distance_array = np.sqrt(distance_array)
+        distance_array = distance_array * -1
+
+        weight_list = np.exp(distance_array)
+
+
+        threshold = np.mean(weight_list) + 2* np.std(weight_list)
+
+        weight_list[weight_list >= threshold] = threshold
+
+        weight_list = weight_list.tolist()
+
+
+        graph = csr_matrix((np.array(weight_list), (np.array(row_list), np.array(col_list))),
+                           shape=(n_cells, n_cells))
+
+        graph_transpose = graph.T
+        prod_matrix = graph.multiply(graph_transpose)
+
+        graph = graph_transpose + graph - prod_matrix
+        return graph
 
     def make_csrmatrix_noselfloop(self, neighbor_array, distance_array):
-        local_pruning_bool = not (self.keep_all_local_dist)
-        if local_pruning_bool == True: print('commencing local pruning based on Euclidean distance metric at',
-                                             self.dist_std_local, 's.dev above mean')
+        # neighbor array not listed in in any order of proximity
         row_list = []
         col_list = []
         weight_list = []
-        neighbor_array = neighbor_array  # not listed in in any order of proximity
-        # print('size neighbor array', neighbor_array.shape)
-        num_neigh = neighbor_array.shape[1]
-        distance_array = distance_array
+
         n_neighbors = neighbor_array.shape[1]
         n_cells = neighbor_array.shape[0]
         rowi = 0
-        count_0dist = 0
         discard_count = 0
+        if self.keep_all_local_dist == False:  # locally prune based on (squared) l2 distance
 
-        if local_pruning_bool == True:  # do some local pruning based on distance
+            print('commencing local pruning based on Euclidean distance metric at',
+                  self.dist_std_local, 's.dev above mean')
+            distance_array = distance_array + 0.1
             for row in neighbor_array:
                 distlist = distance_array[rowi, :]
                 to_keep = np.where(distlist < np.mean(distlist) + self.dist_std_local * np.std(distlist))[0]  # 0*std
                 updated_nn_ind = row[np.ix_(to_keep)]
                 updated_nn_weights = distlist[np.ix_(to_keep)]
-                discard_count = discard_count + (num_neigh - len(to_keep))
+                discard_count = discard_count + (n_neighbors - len(to_keep))
 
                 for ik in range(len(updated_nn_ind)):
                     if rowi != row[ik]:  # remove self-loops
                         row_list.append(rowi)
                         col_list.append(updated_nn_ind[ik])
                         dist = np.sqrt(updated_nn_weights[ik])
-                        if dist == 0:
-                            count_0dist = count_0dist + 1
-                            dist = dist + 0.0001
-                        weight_list.append(dist)
+                        weight_list.append(1/dist)
 
                 rowi = rowi + 1
 
-        if local_pruning_bool == False:  # dont prune based on distance
+        if self.keep_all_local_dist == True:  # dont prune based on distance
             row_list.extend(list(np.transpose(np.ones((n_neighbors, n_cells)) * range(0, n_cells)).flatten()))
             col_list = neighbor_array.flatten().tolist()
             weight_list = (1. / (distance_array.flatten() + 0.1)).tolist()
-        # if local_pruning_bool == True: print('share of neighbors discarded in local distance pruning %.1f' % (discard_count / neighbor_array.size))
 
         csr_graph = csr_matrix((np.array(weight_list), (np.array(row_list), np.array(col_list))),
                                shape=(n_cells, n_cells))
@@ -230,6 +269,8 @@ class PARC:
         return PARC_labels_leiden
 
     def run_subPARC(self):
+
+
         X_data = self.data
         too_big_factor = self.too_big_factor
         small_pop = self.small_pop
@@ -238,11 +279,19 @@ class PARC:
         knn = self.knn
         n_elements = X_data.shape[0]
 
-        # print('number of k-nn is', knn, too_big_factor, 'small pop is', small_pop)
+
+        if self.knn_struct ==None:
+            print('knn struct was not available, so making one')
+            self.make_knn_struct()
+        else: print('knn struct already exists')
 
         neighbor_array, distance_array = self.knn_struct.knn_query(X_data, k=knn)
 
         csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
+
+
+
+
         sources, targets = csr_array.nonzero()
 
         edgelist = list(zip(sources, targets))
@@ -283,7 +332,7 @@ class PARC:
                 print('partition type RBC')
                 partition = leidenalg.find_partition(G_sim, leidenalg.RBConfigurationVertexPartition, weights='weight',
                                                      n_iterations=self.n_iter_leiden, seed=self.random_seed, resolution_parameter = self.resolution_parameter)
-            
+            #print(time.time() - start_leiden)
         else:
             start_leiden = time.time()
             if self.partition_type == 'ModularityVP':
@@ -314,7 +363,7 @@ class PARC:
             cluster_too_big = 0
 
         while too_big == True:
-            knn_big = 50
+
             X_data_big = X_data[cluster_big_loc, :]
             PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big)
             # print('set of new big labels ', set(PARC_labels_leiden_big.flatten()))
@@ -484,7 +533,7 @@ class PARC:
         time_start_total = time.time()
 
         time_start_knn = time.time()
-        self.knn_struct = self.make_knn_struct()
+
         time_end_knn_struct = time.time() - time_start_knn
         # Query dataset, k - number of closest elements (returns 2 numpy arrays)
         self.run_subPARC()
@@ -530,36 +579,27 @@ class PARC:
             self.majority_truth_labels = majority_truth_labels
         return
 
+    def run_umap_hnsw(self, X_input, graph, n_components = 2, alpha: float = 1.0,negative_sample_rate: int = 5,
+        gamma: float = 1.0, spread = 1.0, min_dist = 0.1,init_pos ='spectral',random_state =1,):
 
-def main():
-    # dummy example to check code runs
-    import matplotlib.pyplot as plt
-    from sklearn import datasets
-    iris = datasets.load_iris()
-    X = iris.data
-    y = iris.target
+        from umap.umap_ import find_ab_params, simplicial_set_embedding
+        import matplotlib.pyplot as plt
 
-    p1 = PARC(X, true_label=None, too_big_factor=0.3, resolution_parameter=1)  # without labels
-    p1.run_PARC()
-    print(type(p1.labels), p1.stats_df)
-    plt.scatter(X[:, 0], X[:, 1], c=y)
+        a, b = find_ab_params(spread, min_dist)
+        print('a,b, spread, dist', a,b,spread, min_dist)
+        t0 = time.time()
+        X_umap = simplicial_set_embedding(data = X_input, graph=graph, n_components= n_components, initial_alpha= alpha, a = a, b=b, n_epochs=0, metric_kwds={}, gamma=gamma, negative_sample_rate=negative_sample_rate, init=init_pos,  random_state= np.random.RandomState(random_state), metric='euclidean', verbose = 1)
 
-    # View scatterplot
-    #plt.show()
-    plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
-    plt.show()
-
-    p1 = PARC(X, true_label=y)  # without labels
-    p1.run_PARC()
-    plt.scatter(X[:, 0], X[:, 1], c=y)
-    print(type(p1.labels), p1.stats_df)
-    # View scatterplot
-    #plt.show()
-    plt.scatter(X[:, 0], X[:, 1], c=p1.labels)
-    plt.show()
-
-
-
-if __name__ == '__main__':
-    main()
+        '''
+        import umap
+        fig1, ax1 = plt.subplots()
+        t0=time.time()
+        print('start umap original', time.ctime())
+        X = umap.UMAP(verbose=True).fit_transform(self.data)
+        print('end umap original', time.ctime(), 'time elapsed',round(time.time()-t0))
+        ax1.scatter(X[:, 0], X[:, 1], c='grey',s=6,alpha=0.7)
+        ax1.set_title('original umap. dims:'+ str(self.data.shape[1]))
+        plt.show()
+        '''
+        return X_umap
 
