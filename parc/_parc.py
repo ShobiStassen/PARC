@@ -7,7 +7,7 @@ import leidenalg
 import time
 import umap
 
-#latest github upload 2-June-2020
+#latest github upload 20-May-2020
 class PARC:
     def __init__(self, data, true_label=None, dist_std_local=3, jac_std_global='median', keep_all_local_dist='auto',
                  too_big_factor=0.4, small_pop=10, jac_weighted_edges=True, knn=30, n_iter_leiden=5, random_seed=42,
@@ -139,7 +139,7 @@ class PARC:
                         row_list.append(rowi)
                         col_list.append(updated_nn_ind[ik])
                         dist = np.sqrt(updated_nn_weights[ik])
-                        weight_list.append(1/dist)
+                        weight_list.append(1/(dist+0.1))
 
                 rowi = rowi + 1
 
@@ -602,4 +602,315 @@ class PARC:
         plt.show()
         '''
         return X_umap
+
+def main():
+    import matplotlib.pyplot as plt
+    print('read 20')
+    data_mat = pd.read_csv('/home/shobi/Thesis/Paper_writing/10XMouseBrain/datamatrixN1300K20PC.txt', header=None)
+    print('datamat shape', data_mat.shape)
+    p1 = PARC(data_mat, keep_all_local_dist=True)  # without labels
+    print('started at:', time.ctime())
+    t0 = time.time()
+    p1.run_PARC()
+    print('finished run_parc')
+    p1.make_knn_struct()
+    print('ctime', time.ctime())
+    print('time taken to make the index', round(time.time()-t0))
+    graph = p1.knngraph_full()
+    X = p1.run_umap_hnsw(data_mat, graph)
+    print('time elapsed for umap-hnsw', round(time.time() - t0))
+
+    fig, ax = plt.subplots()
+    ax.scatter(X[:, 0], X[:, 1], c='orange', s=6, alpha=0.7)
+    ax.set_title('hnsw umap. dims and samples(K):' + str(p1.data.shape[1])+ str((p1.data.shape[0])/1000))
+    plt.show()
+
+    print('ctime', time.ctime())
+    fig, ax = plt.subplots()
+    t0 = time.time()
+    X_umap_original = umap.UMAP().fit_transform(data_mat)
+    print('time elapsed for umap-original', round(time.time() - t0))
+    ax.scatter(X_umap_original[:, 0], X_umap_original[:, 1], c='green')
+    ax.set_title('umap original')
+    plt.show()
+
+    p1.run_PARC()
+    labels = p1.labels
+def main1():
+    # dummy example to check code runs
+    import matplotlib.pyplot as plt
+
+    from sklearn import datasets
+    import umap
+    iris = datasets.load_iris()
+    X = iris.data
+    y = iris.target
+
+    p1 = PARC(X, true_label=y, too_big_factor=0.3, resolution_parameter=1, keep_all_local_dist=True)  # without labels
+    p1.run_PARC()
+    print(type(p1.labels), p1.stats_df)
+    print('finished first parc without y label')
+    #plt.scatter(X[:, 0], X[:, 1], c=y)
+    graph = p1.knngraph_full()
+    X_umap = p1.run_umap_hnsw(X, graph)
+
+    plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y)
+
+    plt.show()
+
+    X_umap_original = umap.UMAP().fit_transform(X)
+    plt.scatter(X_umap_original[:, 0], X_umap_original[:, 1], c=y)
+    plt.show()
+
+    # View scatterplot
+    #plt.show()
+    plt.scatter(X_umap[:, 0], X_umap[:, 1], c=p1.labels)
+    plt.show()
+
+    p1 = PARC(X, true_label=y)  # without labels
+    p1.run_PARC()
+
+
+
+    plt.scatter(X_umap[:, 0], X_umap[:, 1], c=p1.labels)
+    plt.show()
+
+
+def main0():
+    from scipy.io import loadmat
+    from scipy import stats
+    import matplotlib.pyplot as plt
+    annots = loadmat('/home/shobi/Thesis/Data/Kelvin2020/NPcell.mat')
+    # annots = loadmat('/home/shobi/Thesis/Data/Kelvin2020/NPcell(26feature).mat')
+    #print('annots', annots)
+
+    '''
+    labels = []
+    with open('/home/shobi/Thesis/Data/Kelvin2020/parc_clusters_n86389_d95Feb28.txt', 'r') as filehandle:
+        for line in filehandle:
+            # remove linebreak which is the last character of the string
+            currentPlace = int(line.strip())
+            labels.append(currentPlace)
+    print('labels', len(labels))
+    print('set of labels', set(labels))
+    '''
+    '''
+    print('phenotypes shape', annots['Phenotypes'].shape, annots['PhenoLabel'].shape)
+
+    print('cell ID', annots['CellID'])
+    print('header', annots['__header__'])
+    print('globals', annots['__globals__'])
+    print('phenotypes', annots['Phenotypes'])
+    print('batch', annots['Batch'])
+    '''
+    col_pheno = []
+    col_pheno_nofluo = []
+    for i in range(100):  # 43
+
+        col_pheno.append(annots["PhenoLabel"][0][i][0])
+    #print('list col', col_pheno)
+    # col_pheno.remove('Cell ID') use for feat26
+    true_label = annots['Batch'][0]
+    #print('length true', len(true_label), len(set(true_label)))
+
+    data_mat = annots['Phenotypes'].T  # (features x cells).T makes it  cellxfeatures
+    print('shape data mat', data_mat.shape)
+    df = pd.DataFrame(data_mat)
+    #print(df.head)
+
+    df.columns = col_pheno
+    # col_pheno = list(df.columns)
+
+    # col_pheno_nofluo = col_pheno.copy()
+    # fluo_list = ['Fluorescence Ch1 (Peak)', 'Fluorescence Ch1 (Area)', 'Fluorescence density (1d) Ch1', 'Fluorescence density (3d) Ch1', 'Fluorescence-Phase correlation Ch1', 'Fluorescence Ch2 (Peak)', 'Fluorescence Ch2 (Area)', 'Fluorescence density (1d) Ch2', 'Fluorescence density (3d) Ch2','Fluorescence-Phase correlation Ch2']
+    # for f in fluo_list:
+    #    col_pheno_nofluo.remove(f)
+    df['Batch'] = annots['Batch'][0]
+    df['CellID'] = annots['CellID'][0]
+    df['Unique_ID'] = 'B' + df['Batch'].astype('str') + "C" + df['CellID'].astype('str')
+    df = df[~df.isin([np.nan, np.inf, -np.inf]).any(1)]
+    # ax = df[['Volume','Fluorescence Ch1 (Area)']].plot.hist(bins=100, alpha=0.5)
+    # plt.show()
+
+    df[col_pheno] = (df[col_pheno] - df[col_pheno].mean()) / df[col_pheno].std()
+
+    # for i in col_pheno:   print('mean of df col before outlier removal', df[i].mean())
+
+    for i in col_pheno:
+        p99 = df[i].quantile(.9999)
+        p01 = df[i].quantile(.0001)
+        df = df[(df[i] <= p99) & (df[i] >= p01)]
+
+    # ax=df[['Volume','Fluorescence Ch1 (Area)']].plot.hist(bins=150, alpha=0.5)
+    # plt.show()
+    # print('shape df', df.shape, df.head)
+
+    # col_pheno = col_pheno_nofluo
+    # data_mat=np.array(df[['Volume','Fluorescence Ch1 (Area)']].values, dtype = np.float64)
+    data_mat = np.array(df[col_pheno].values[:, 0:50], dtype=np.float64)# change back to 95 dimensions
+    print('shape of data mat', data_mat.shape)
+    data_mat_vis = np.array(df[col_pheno].values, dtype=np.float64)
+
+
+
+    def plot_hist(X, df, col_pheno):
+
+        col_label = 0
+        for set_num in range(7):  # 10
+
+            fig, ax = plt.subplots(2, 3, sharey=True)  # 5
+            cc = 0
+            # for i, j in zip([0, 0, 0, 0, 0, 1, 1, 1, 1, 1], [0, 1, 2, 3, 4, 0, 1, 2, 3, 4]):
+            for i, j in zip([0, 0, 0, 1, 1, 1], [0, 1, 2, 0, 1, 2]):
+                ax[i, j].scatter(X[:, 0], X[:, 1], c=df[col_pheno[col_label + cc]].values, cmap='viridis', s=1,
+                                 alpha=0.5)
+                ax[i, j].set_title(col_pheno[col_label + cc])
+                cc = cc + 1
+            print('saving histogram set num', set_num)
+            plt.show()
+            # plt.savefig('/home/shobi/Thesis/Data/Kelvin2020/Histograms/set_' + str(set_num) + '.png')
+            col_label = col_label + 6  # 10
+
+    true_label = df['Batch'].values
+
+    print('clean matrix', data_mat.shape)
+    # print('first col',data_mat[3,:])
+
+    # print('mean', np.mean(data_mat, axis=0))
+    # data_mat = stats.zscore(data_mat)
+    num_feat = data_mat.shape[1]
+    num_cells = data_mat.shape[0]
+    p1 = PARC(data_mat, true_label=true_label, keep_all_local_dist=True)  # without labels
+    t0 = time.time()
+    p1.make_knn_struct()
+    graph = p1.knngraph_full()
+    X = p1.run_umap_hnsw(data_mat, graph)
+    print('time elapsed for umap-hnsw', round(time.time()-t0))
+
+    fig, ax = plt.subplots()
+    ax.scatter(X[:, 0], X[:, 1], c='orange', s=6, alpha=0.7)
+    ax.set_title('hnsw umap no row norm. dims:' + str(p1.data.shape[1]))
+    plt.show()
+
+    p1.run_PARC()
+    labels = p1.labels
+
+    '''
+    import umap
+    print('start umap', time.ctime())
+    X = umap.UMAP().fit_transform(data_mat)
+    print('end umap', time.ctime())
+    # X = np.loadtxt('/home/shobi/Thesis/Data/Kelvin2020/umap_n86389Feb28.txt')
+    
+    plt.scatter(X[:, 0], X[:, 1], c=p1.labels, cmap='tab20')
+    plt.title('PARC on input shape:' + str(data_mat.shape[1]))
+    plt.show()
+    '''
+
+    df['PARC'] = labels
+    df['umap_x'] = X[:, 0]
+    df['umap_y'] = X[:, 1]
+    df = df.sort_values(by='PARC')
+    # X = TSNE().fit_transform(data_mat[:,0:10])
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=2)
+    # X = pca.fit_transform(data_mat_vis)
+    plt.scatter(X[:, 0], X[:, 1], c=p1.labels, cmap='tab20')
+    plt.title('PARC on input shape:'+str(data_mat.shape[1]))
+    plt.show()
+
+    import seaborn as sns
+    from matplotlib import cm
+    cmap_div = sns.diverging_palette(240, 10, as_cmap=True)
+    cmap = cm.get_cmap('nipy_spectral')
+    a = cmap(np.linspace(0, 1, len(set(labels)))).tolist()
+    lut = dict(zip(set(labels), [a[i] for i in range(0, len(set(labels)))]))
+    row_colors = df['PARC'].map(lut)
+    # col_pheno.remove("Dry Mass var")
+    # col_pheno.remove("Phase Radial Distribution")
+    g = sns.clustermap(df[col_pheno], row_cluster=False, col_cluster=True, cmap=cmap_div, row_colors=row_colors,
+                       vmin=-3, vmax=3.5, xticklabels=1)
+    plt.setp(g.ax_heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
+    # g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment='right')
+    plt.show()
+    df_mean = df.groupby('PARC')[col_pheno].mean()
+    df_mean['PARC'] = df_mean.index
+    print('mean df', df_mean)
+    row_colors_mean = df_mean['PARC'].map(lut)
+
+    g = sns.clustermap(df_mean[col_pheno], row_cluster=True, col_cluster=True, cmap=cmap_div,
+                       row_colors=row_colors_mean, vmin=-3, vmax=3.5, xticklabels=1)
+    # g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment='right')
+    plt.show()
+    new_row_order = [int(item.get_text()) for item in g.ax_heatmap.yaxis.get_majorticklabels()]
+    print(new_row_order, 'clustermap row order')
+    labels_array = df['PARC'].values  # np.asarray(labels).astype(int)
+    cell_order = np.asarray(labels)  # placeholder
+    count_i = 0
+    for i, ii in enumerate(new_row_order):
+        where = np.where(labels_array == ii)[0]
+        print('i,ii,where', i, ii, where)
+        cell_order[where] = i
+    print('cell order', cell_order)
+    df['heatmap_order'] = cell_order
+    df = df.sort_values(by='heatmap_order')
+    print(df.head)
+    print('lut', lut)
+    df.reset_index()
+    row_colors = df['PARC'].map(lut)
+    # col_pheno.remove("Dry Mass var")
+    # col_pheno.remove("Phase Radial Distribution")
+    g = sns.clustermap(df[col_pheno], row_cluster=False, col_cluster=True, cmap=cmap_div, row_colors=row_colors,
+                       vmin=-3, vmax=3.5, xticklabels=1)
+    # g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment='right')
+    plt.show()
+
+    df_labels = df[['Batch', "CellID", 'Unique_ID', "PARC", "umap_x", "umap_y"]]
+
+    df_labels.to_csv(
+        '/home/shobi/Thesis/Data/Kelvin2020/parc_clusters_n' + str(num_cells) + '_d' + str(num_feat) + 'Mar2.csv')
+    np.savetxt(
+        '/home/shobi/Thesis/Data/Kelvin2020/parc_clusters_n' + str(num_cells) + '_d' + str(num_feat) + 'Mar2.txt',
+        p1.labels)
+
+    print('start umap', time.ctime())
+
+    # X = np.loadtxt('/home/shobi/Thesis/Data/Kelvin2020/umap_d42_n87456Mar2.txt')
+    for cluster_i in set(labels):
+        loc_i = np.where(np.asarray(labels) == cluster_i)[0]
+        x = X[loc_i, 0]
+        y = X[loc_i, 1]
+        plt.scatter(x, y, c=lut[cluster_i], s=2, alpha=0.5, label=str(cluster_i))
+        plt.annotate(str(cluster_i), xytext=(np.mean(x), np.mean(y)), xy=(np.mean(x), np.mean(y)), color='black',
+                     weight='bold')
+    plt.title('PARC on input shape:' + str(data_mat.shape[1]))
+    plt.legend(markerscale=3)
+    plt.show()
+
+    # print('shape of umap', X.shape)
+
+    print('end umap', time.ctime())
+
+    np.savetxt('/home/shobi/Thesis/Data/Kelvin2020/umap_d' + str(num_feat) + '_n' + str(num_cells) + 'Mar2.txt', X)
+
+
+def main1():
+    no_fluo = []
+    fluo = []
+    with open('/home/shobi/Thesis/Data/Kelvin2020/Analysis/d95/parc_clusters_n86389_d95Mar2.txt', 'r') as filehandle:
+        for line in filehandle:
+            # remove linebreak which is the last character of the string
+            currentPlace = (line.strip())
+            no_fluo.append(currentPlace)
+    with open('/home/shobi/Thesis/Data/Kelvin2020/Analysis/d100/parc_clusters_n86389_d100Mar2.txt', 'r') as filehandle:
+        for line in filehandle:
+            # remove linebreak which is the last character of the string
+            currentPlace = (line.strip())
+            fluo.append(currentPlace)
+    from sklearn.metrics.cluster import adjusted_rand_score
+    print('ari for clustering', adjusted_rand_score(np.asarray(fluo), np.asarray(no_fluo)))
+
+
+if __name__ == '__main__':
+    main()
 
