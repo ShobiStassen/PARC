@@ -11,7 +11,8 @@ import umap
 class PARC:
     def __init__(self, data, true_label=None, dist_std_local=3, jac_std_global='median', keep_all_local_dist='auto',
                  too_big_factor=0.4, small_pop=10, jac_weighted_edges=True, knn=30, n_iter_leiden=5, random_seed=42,
-                 num_threads=-1, distance='l2', time_smallpop=15, partition_type = "ModularityVP", resolution_parameter = 1.0, knn_struct=None, hnsw_param_ef_construction = 150):
+                 num_threads=-1, distance='l2', time_smallpop=15, partition_type = "ModularityVP", resolution_parameter = 1.0,
+                 knn_struct=None, neighbor_graph=None, hnsw_param_ef_construction = 150):
         # higher dist_std_local means more edges are kept
         # highter jac_std_global means more edges are kept
         if keep_all_local_dist == 'auto':
@@ -38,6 +39,7 @@ class PARC:
         self.partition_type = partition_type #default is the simple ModularityVertexPartition where resolution_parameter =1. In order to change resolution_parameter, we switch to RBConfigurationVP
         self.resolution_parameter = resolution_parameter # defaults to 1. expose this parameter in leidenalg
         self.knn_struct = knn_struct #the hnsw index of the KNN graph on which we perform queries
+        self.neighbor_graph = neighbor_graph # CSR affinity matrix for pre-computed nearest neighbors
         self.hnsw_param_ef_construction = hnsw_param_ef_construction #set at 150. higher value increases accuracy of index construction. Even for several 100,000s of cells 150-200 is adequate
 
     def make_knn_struct(self, too_big=False, big_cluster=None):
@@ -67,7 +69,7 @@ class PARC:
             p.add_items(big_cluster)
         p.set_ef(ef_query)  # ef should always be > k
         self.knn_struct =p
-        return
+        return p
 
     def knngraph_full(self):#, neighbor_array, distance_array):
         k_umap = 15
@@ -280,17 +282,16 @@ class PARC:
         n_elements = X_data.shape[0]
 
 
-        if self.knn_struct ==None:
-            print('knn struct was not available, so making one')
-            self.make_knn_struct()
-        else: print('knn struct already exists')
-
-        neighbor_array, distance_array = self.knn_struct.knn_query(X_data, k=knn)
-
-        csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
-
-
-
+        if self.neighbor_graph is not None:
+            csr_array = self.neighbor_graph
+        else:
+            if self.knn_struct is None:
+                print('knn struct was not available, so making one')
+                self.make_knn_struct()
+            else:
+                print('knn struct already exists')
+            neighbor_array, distance_array = self.knn_struct.knn_query(X_data, k=knn)
+            csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
 
         sources, targets = csr_array.nonzero()
 
