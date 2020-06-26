@@ -368,8 +368,8 @@ class PARC:
             X_data_big = X_data[cluster_big_loc, :]
             PARC_labels_leiden_big = self.run_toobig_subPARC(X_data_big)
             # print('set of new big labels ', set(PARC_labels_leiden_big.flatten()))
-            PARC_labels_leiden_big = PARC_labels_leiden_big + 1000
-            # print('set of new big labels +1000 ', set(list(PARC_labels_leiden_big.flatten())))
+            PARC_labels_leiden_big = PARC_labels_leiden_big + 100000
+            # print('set of new big labels +100000 ', set(list(PARC_labels_leiden_big.flatten())))
             pop_list = []
 
             for item in set(list(PARC_labels_leiden_big.flatten())):
