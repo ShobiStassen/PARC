@@ -68,7 +68,7 @@ class PARC:
             p.init_index(max_elements=n_elements, ef_construction=200, M=30)
             p.add_items(big_cluster)
         p.set_ef(ef_query)  # ef should always be > k
-        self.knn_struct =p
+        
         return p
 
     def knngraph_full(self):#, neighbor_array, distance_array):
@@ -287,7 +287,7 @@ class PARC:
         else:
             if self.knn_struct is None:
                 print('knn struct was not available, so making one')
-                self.make_knn_struct()
+                self.knn_struct = self.make_knn_struct()
             else:
                 print('knn struct already exists')
             neighbor_array, distance_array = self.knn_struct.knn_query(X_data, k=knn)
