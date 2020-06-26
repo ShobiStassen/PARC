@@ -7,7 +7,7 @@ import leidenalg
 import time
 import umap
 
-#latest github upload 20-May-2020
+#latest github upload 26-June-2020
 class PARC:
     def __init__(self, data, true_label=None, dist_std_local=3, jac_std_global='median', keep_all_local_dist='auto',
                  too_big_factor=0.4, small_pop=10, jac_weighted_edges=True, knn=30, n_iter_leiden=5, random_seed=42,
