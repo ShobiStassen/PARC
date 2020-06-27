@@ -267,7 +267,7 @@ class PARC:
                     PARC_labels_leiden[single_cell] = best_group
 
         dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
-        self.labels = PARC_labels_leiden
+        
         return PARC_labels_leiden
 
     def run_subPARC(self):
