@@ -284,6 +284,7 @@ class PARC:
 
         if self.neighbor_graph is not None:
             csr_array = self.neighbor_graph
+            neighbor_array = np.split(csr_array.indices, csr_array.indptr)[1:-1]
         else:
             if self.knn_struct is None:
                 print('knn struct was not available, so making one')
@@ -416,7 +417,7 @@ class PARC:
         for small_cluster in small_pop_list:
 
             for single_cell in small_cluster:
-                old_neighbors = neighbor_array[single_cell, :]
+                old_neighbors = neighbor_array[single_cell]
                 group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                 group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                 available_neighbours = set(group_of_old_neighbors) - set(small_cluster_list)
@@ -437,7 +438,7 @@ class PARC:
                     small_pop_list.append(np.where(PARC_labels_leiden == cluster)[0])
             for small_cluster in small_pop_list:
                 for single_cell in small_cluster:
-                    old_neighbors = neighbor_array[single_cell, :]
+                    old_neighbors = neighbor_array[single_cell]
                     group_of_old_neighbors = PARC_labels_leiden[old_neighbors]
                     group_of_old_neighbors = list(group_of_old_neighbors.flatten())
                     best_group = max(set(group_of_old_neighbors), key=group_of_old_neighbors.count)
