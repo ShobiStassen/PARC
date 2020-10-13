@@ -7,13 +7,13 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name='parc',
-    version='0.29', #June-3-2020
+    version='0.31', #Oct-13-2020
     packages=['parc',],
     license='MIT',
     author_email = 'shobana.venkat88@gmail.com',
     url = 'https://github.com/ShobiStassen/PARC',
     setup_requires = ['numpy','pybind11'],
-    install_requires=['pybind11','numpy','scipy','pandas','hnswlib','python-igraph','leidenalg==0.7.0','umap-learn'],
+    install_requires=['pybind11','numpy','scipy','pandas','hnswlib','python-igraph','leidenalg>=0.7.0','umap-learn'],
     long_description=long_description,
     long_description_content_type='text/markdown'
 )
