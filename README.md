@@ -93,7 +93,7 @@ parc_labels = Parc2.labels
 ## Example Usage 2. (mid-scale scRNA-seq): 10X PBMC (Zheng et al., 2017)
 [pre-processed datafile](https://drive.google.com/file/d/1H4gOZ09haP_VPCwsYxZt4vf3hJ1GZj3b/view?usp=sharing)
 
-[annotations](Datasets/annotations_zhang.txt)
+[annotations](https://github.com/ShobiStassen/PARC/blob/master/Datasets/zheng17_annotations.txt)
 
 ```
 import parc
