@@ -172,14 +172,13 @@ class PARC:
         # print('shapes of neigh and dist array', neighbor_array.shape, distance_array.shape)
         csr_array = self.make_csrmatrix_noselfloop(neighbor_array, distance_array)
         sources, targets = csr_array.nonzero()
-        mask = np.zeros(len(sources), dtype=bool)
+        #mask = np.zeros(len(sources), dtype=bool)
 
-        mask |= (csr_array.data > (
-                    np.mean(csr_array.data) + np.std(csr_array.data) * 5))  # smaller distance means stronger edge
+        #mask |= (csr_array.data < (np.mean(csr_array.data) - np.std(csr_array.data) * 5))  # weights are 1/dist so bigger weight means closer nodes 
 
-        csr_array.data[mask] = 0
-        csr_array.eliminate_zeros()
-        sources, targets = csr_array.nonzero()
+        #csr_array.data[mask] = 0 
+        #csr_array.eliminate_zeros()
+        #sources, targets = csr_array.nonzero()
         edgelist = list(zip(sources.tolist(), targets.tolist()))
         edgelist_copy = edgelist.copy()
         G = ig.Graph(edgelist, edge_attrs={'weight': csr_array.data.tolist()})
