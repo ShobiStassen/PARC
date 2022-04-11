@@ -16,15 +16,14 @@ python3 setup.py install // cd into the directory of the cloned PARC folder cont
 
 ### install dependencies separately if needed (linux)
 If the pip install doesn't work, it usually suffices to first install all the requirements (using pip) and subsequently install parc (also using pip)
-We note that the latest version of leidenalg (0.8.0. released April 2020) is significantly slower than its predecessor. Please ensure that the leidenalg installed is version 0.7.0 for the time being.
 ```
-pip install python-igraph, leidenalg==0.7.0, hnswlib, umap-learn
+pip install igraph, leidenalg, hnswlib, umap-learn
 pip install parc
 ```
 
 ### Windows installation
 
-install python-igraph and leidenalg using binaries before calling "pip install parc"
+install igraph and leidenalg using binaries before calling "pip install parc"
 python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
 leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files) available for python3.6 only
 
@@ -67,7 +66,7 @@ Parc1 = parc.PARC(X,true_label=y) // instantiate PARC
 Parc1.run_PARC() // run the clustering
 parc_labels = Parc1.labels
 # View scatterplot colored by PARC labels
-plt.scatter(X[:, 0], X[:, 1], c=parc_labels)
+plt.scatter(X[:, 0], X[:, 1], c=parc_labels, cmap='rainbow')
 plt.show()
 
 # Run umap on the HNSW knngraph already built in PARC (more time and memory efficient for large datasets)
