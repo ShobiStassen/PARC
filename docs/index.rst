@@ -29,7 +29,7 @@ If the pip install doesn't work, it usually suffices to first install all the re
 **Windows installation**::
 
   install igraph and leidenalg using binaries before calling "pip install parc"
-  python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
+  python-igraph: download the python36 Windows Binaries by `Gohlke <http://www.lfd.uci.edu/~gohlke/pythonlibs>` 
   leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files)
 
   conda create --name parcEnv python=3.6 pip
@@ -40,7 +40,7 @@ If the pip install doesn't work, it usually suffices to first install all the re
 
 Example Usage on Covid-19 scRNA-seq data
 -----------------------------------------
-Check out the *new* `Jupyter Notebook]<https://github.com/ShobiStassen/PARC/blob/master/Covid19_Parc.ipynb>`_ for how to pre-process and PARC cluster the new Covid-19 BALF dataset by `Liao et. al 2020 <https://www.nature.com/articles/s41591-020-0901-9>`_. 
+Check out the *new* `Jupyter Notebook <https://github.com/ShobiStassen/PARC/blob/master/Covid19_Parc.ipynb>`_ for how to pre-process and PARC cluster the new Covid-19 BALF dataset by `Liao et. al 2020 <https://www.nature.com/articles/s41591-020-0901-9>`_. 
 We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million) 
 
 **PARC Cluster-level average gene expression**
@@ -52,7 +52,16 @@ We also show how to integrate UMAP with HNSW such that the embedding in UMAP is 
 
 .. toctree::
    :caption: Main
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
 
-   installation
+   Installation
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
