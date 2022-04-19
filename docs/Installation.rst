@@ -21,9 +21,9 @@ If the pip install doesn't work, it usually suffices to first install all the re
 
 **Windows installation**::
 
-  install igraph and leidenalg using binaries before calling "pip install parc"
-  python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
-  leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files)
+install igraph and leidenalg using binaries before calling "pip install parc"
+python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
+leidenalg: depends on python-igraph. download `windows binary <https://pypi.org/project/leidenalg/#files>`_::
 
   conda create --name parcEnv python=3.6 pip
   pip install python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl 
@@ -32,7 +32,11 @@ If the pip install doesn't work, it usually suffices to first install all the re
   pip install parc
 
 **References to dependencies**  
-- Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
-- hsnwlib Malkov, Yu A., and D. A. Yashunin. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small   World graphs." TPAMI, preprint: https://arxiv.org/abs/1603.09320
-- igraph (igraph.org/python/)
+
+- `Leiden algorithm <V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z>`_
+
+- `hsnwlib <https://arxiv.org/abs/1603.09320>`_ (Malkov Yu A., and D. A. Yashunin) "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs."  
+
+
+
 
