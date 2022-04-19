@@ -76,7 +76,7 @@ parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15, random_seed =1, small_pop 
 parc1.run_PARC() // run the clustering
 parc_labels = parc1.labels 
 ```
-![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
+![](https://github.com/ShobiStassen/PARC/blob/master/Images/10X_PBMC_PARC_andGround.png?raw=true) tsne plot of annotations and PARC clustering
 
 ** Example Usage 3.**
 10X PBMC (Zheng et al., 2017) integrating Scanpy pipeline
@@ -149,4 +149,4 @@ parc2.run_PARC() // run the clustering
 parc_labels_rare = parc2.labels
 
 ```
-![](Images/70K_Lung_github_overview.png) tsne plot of annotations and PARC clustering, heatmap of features
+![](https://github.com/ShobiStassen/PARC/blob/master/Images/70K_Lung_github_overview.png?raw=true) tsne plot of annotations and PARC clustering, heatmap of features

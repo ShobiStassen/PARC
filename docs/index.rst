@@ -17,11 +17,17 @@ We also show how to integrate UMAP with HNSW such that the embedding in UMAP is 
   <img src="https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png?raw=true" width="220px" align="center" </a>
   <img src ="https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png?raw=true" align="center" width ="580px" </a>
 
+
+**Citing**
+If you find this code useful in your work, please consider citing this paper `PARC:ultrafast and accurate clustering of phenotypic data of millions of single cells <https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa042/5714737>`_
+
+
 .. toctree::
    :caption: Main
-   :maxdepth: 2
+   :maxdepth: 1
    :hidden:
 
    Installation
    Examples
+   Parameter Usage
 

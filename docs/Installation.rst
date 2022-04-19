@@ -31,3 +31,8 @@ If the pip install doesn't work, it usually suffices to first install all the re
   pip install hnswlib
   pip install parc
 
+**References to dependencies**  
+- Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
+- hsnwlib Malkov, Yu A., and D. A. Yashunin. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small   World graphs." TPAMI, preprint: https://arxiv.org/abs/1603.09320
+- igraph (igraph.org/python/)
+
