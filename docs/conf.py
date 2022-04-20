@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'pyVIA'
+project = 'PARC'
 copyright = '2022, Shobana Stassen'
 author = 'Shobana Stassen'
 
