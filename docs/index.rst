@@ -15,7 +15,7 @@ We also show how to integrate UMAP with HNSW such that the embedding in UMAP is 
 .. raw:: html
 
   <img src="https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png?raw=true" width="220px" align="center" </a>
-  <img src ="https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png?raw=true" align="center" width ="580px" </a>
+  <img src ="https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_hnsw_umap.png?raw=true" align="center" width ="600px" </a>
 
 
 **Citing**

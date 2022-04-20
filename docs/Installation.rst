@@ -33,7 +33,7 @@ leidenalg: depends on python-igraph. download `windows binary <https://pypi.org/
 
 **References to dependencies**  
 
-- `Leiden algorithm <V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z>`_
+- `Leiden algorithm (V.A. Traag, 2019) <doi.org/10.1038/s41598-019-41695-z>`_
 
 - `hsnwlib <https://arxiv.org/abs/1603.09320>`_ (Malkov Yu A., and D. A. Yashunin) "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs."  
 
