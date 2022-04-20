@@ -25,7 +25,7 @@ pip install parc
 ```
 
 **Windows installation** 
-Once you have Visual Studio installed it should be smooth sailing. It might be easier to install dependences using either pip or conda -c conda-forge install. If this doesn't work then you might need to consider using binaries to install igraph and leidenalg.
+Once you have Visual Studio installed it should be smooth sailing (sometimes requires a restart after intalling VS). It might be easier to install dependences using either pip or conda -c conda-forge install. If this doesn't work then you might need to consider using binaries to install igraph and leidenalg.
 
 python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
 leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files) available for python3.6 only
