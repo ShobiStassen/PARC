@@ -2,7 +2,7 @@ PARC - phenotyping by accelerated refined community-partitioning
 ==================================================================
 **PARC** is a fast, automated, combinatorial  graph-based clustering approach that integrates hierarchical graph construction (HNSW) and data-driven graph-pruning with the new Leiden community-detection algorithm. `Stassen et al. (Bioinformatics, 2020) <https://academic.oup.com/bioinformatics/article/36/9/2778/5714737>`_ *PARC:ultrafast and accurate clustering of phenotypic data of millions of single cells.*
 
-|:eight_spoked_asterisk:| **PARC** forms the clustering basis for our new Trajectory Inference (TI) method `VIA <https://github.com/ShobiStassen/VIA>`_. **VIA** is a single-cell Trajectory Inference method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages. VIA can also be used to topologically visualize the graph-based connectivity of clusters found by PARC in a non-TI context. 
+|:eight_spoked_asterisk:| **PARC** forms the clustering basis for our new Trajectory Inference (TI) method **VIA** available on `Readthedocs <https://pyvia.readthedocs.io/en/latest/>`_ and `Github <https://github.com/ShobiStassen/VIA>`_. **VIA** is a single-cell Trajectory Inference method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages. **VIA can also be used to topologically visualize the graph-based connectivity of clusters found by PARC in a non-TI context.**
 
 
 Example Usage on Covid-19 scRNA-seq data
