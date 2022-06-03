@@ -1,9 +1,12 @@
 # PARC
 PARC, “phenotyping by accelerated refined community-partitioning” - is a fast, automated, combinatorial  graph-based clustering approach that integrates hierarchical graph construction (HNSW) and data-driven graph-pruning with the new Leiden community-detection algorithm. [PARC:ultrafast and accurate clustering of phenotypic data of millions of single cells](https://academic.oup.com/bioinformatics/article/36/9/2778/5714737).
 
-:eight_spoked_asterisk: PARC forms the clustering basis for our new Trajectory Inference (TI) method [VIA](https://github.com/ShobiStassen/VIA). VIA is a single-cell Trajectory Inference method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages. VIA can also be used to topologically visualize the graph-based connectivity of clusters found by PARC in a non-TI context. 
+Check out **[Readthedocs](https://parc.readthedocs.io/en/latest/index.html)** for An [installation guide](https://parc.readthedocs.io/en/latest/Installation.html), [examples](https://parc.readthedocs.io/en/latest/Examples.html) on different data and [tutorials](https://parc.readthedocs.io/en/latest/Notebook-covid19.html).  
 
-An [installation guide](https://parc.readthedocs.io/en/latest/Installation.html), [examples](https://parc.readthedocs.io/en/latest/Examples.html) on different data and [tutorials](https://parc.readthedocs.io/en/latest/Notebook-covid19.html) are available.  
+:eight_spoked_asterisk: **PARC** forms the clustering basis for our new Trajectory Inference (TI) method **VIA** available on [Github](https://github.com/ShobiStassen/VIA) or [readthedocs](https://parc.readthedocs.io/en/latest/index.html). VIA is a single-cell TI method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages. 
+**VIA can also be used to topologically visualize the graph-based connectivity of clusters found by PARC in a non-TI context.**
+
+
 
 ### Installation
 **Using pip**
