@@ -3,7 +3,7 @@ PARC, “phenotyping by accelerated refined community-partitioning” - is a fas
 
 Check out **[Readthedocs](https://parc.readthedocs.io/en/latest/index.html)** for An [installation guide](https://parc.readthedocs.io/en/latest/Installation.html), [examples](https://parc.readthedocs.io/en/latest/Examples.html) on different data and [tutorials](https://parc.readthedocs.io/en/latest/Notebook-covid19.html).  
 
-:eight_spoked_asterisk: **PARC** forms the clustering basis for our new Trajectory Inference (TI) method **VIA** available on [Github](https://github.com/ShobiStassen/VIA) or [readthedocs](https://parc.readthedocs.io/en/latest/index.html). VIA is a single-cell TI method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages. 
+:eight_spoked_asterisk: **PARC** forms the clustering basis for our new Trajectory Inference (TI) method **VIA** available on [Github](https://github.com/ShobiStassen/VIA) or [readthedocs](https://parc.readthedocs.io/en/latest/index.html). VIA is a single-cell TI method that offers topology construction and visualization, pseudotimes, automated prediction of terminal cell fates and temporal gene dynamics along detected lineages.
 **VIA can also be used to topologically visualize the graph-based connectivity of clusters found by PARC in a non-TI context.**
 
 
@@ -11,12 +11,12 @@ Check out **[Readthedocs](https://parc.readthedocs.io/en/latest/index.html)** fo
 ### Installation
 **Using pip**
 ```
-conda create --name ParcEnv pip 
+conda create --name ParcEnv pip
 pip install parc // tested on linux
 ```
 **Cloning repository and running setup.py** (ensure dependencies are installed)
 ```
-git clone https://github.com/ShobiStassen/PARC.git 
+git clone https://github.com/ShobiStassen/PARC.git
 python3 setup.py install // cd into the directory of the cloned PARC folder containing setup.py and issue this command
 ```
 
@@ -27,10 +27,10 @@ pip install igraph, leidenalg, hnswlib, umap-learn
 pip install parc
 ```
 
-**Windows installation** 
+**Windows installation**
 Once you have Visual Studio installed it should be smooth sailing (sometimes requires a restart after intalling VS). It might be easier to install dependences using either pip or conda -c conda-forge install. If this doesn't work then you might need to consider using binaries to install igraph and leidenalg.
 
-python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs) 
+python-igraph: download the python36 Windows Binaries by [Gohlke](http://www.lfd.uci.edu/~gohlke/pythonlibs)
 leidenalg: depends on python-igraph. download [windows binary](https://pypi.org/project/leidenalg/#files) available for python3.6 only
 
 ```
@@ -42,8 +42,8 @@ pip install parc
 ```
 ## Example Usage on Covid-19 scRNA-seq data
 
-Check out the [Jupyter Notebook](https://parc.readthedocs.io/en/latest/Notebook-covid19.html) for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9). 
-We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million) 
+Check out the [Jupyter Notebook](https://parc.readthedocs.io/en/latest/Notebook-covid19.html) for how to pre-process and PARC cluster the new Covid-19 BALF dataset by [Liao et. al 2020](https://www.nature.com/articles/s41591-020-0901-9).
+We also show how to integrate UMAP with HNSW such that the embedding in UMAP is constructed using the HNSW graph built in PARC, enabling a very fast and memory efficient viusalization (particularly noticeable when n_cells > 1 Million)
 
 ### PARC Cluster-level average gene expression
 ![](https://github.com/ShobiStassen/PARC/blob/master/Images/Covid_matrixplot.png)
@@ -88,7 +88,7 @@ plt.show()
 
 // load sample digits data
 digits = datasets.load_digits()
-X = digits.data // (n_obs x k_dim, 1797x64) 
+X = digits.data // (n_obs x k_dim, 1797x64)
 y = digits.target
 Parc2 = parc.PARC(X,true_label=y, jac_std_global='median') // 'median' is default pruning level
 Parc2.run_PARC()
@@ -114,14 +114,14 @@ X = X.astype("float")
 // OR with pandas as: X = pd.read_csv("'./pca50_pbmc68k.txt", header=None).values.astype("float")
 
 y = [] // annotations
-with open('./zheng17_annotations.txt', 'rt') as f: 
+with open('./zheng17_annotations.txt', 'rt') as f:
     for line in f: y.append(line.strip().replace('\"', ''))
 // OR with pandas as: y =  list(pd.read_csv('./data/zheng17_annotations.txt', header=None)[0])   
 
 // setting small_pop to 50 cleans up some of the smaller clusters, but can also be left at the default 10
 parc1 = parc.PARC(X,true_label=y,jac_std_global=0.15, random_seed =1, small_pop = 50) // instantiate PARC
 parc1.run_PARC() // run the clustering
-parc_labels = parc1.labels 
+parc_labels = parc1.labels
 ```
 ![](Images/10X_PBMC_PARC_andGround.png) tsne plot of annotations and PARC clustering
 
@@ -179,7 +179,7 @@ import parc
 import pandas as pd
 
 // load data: digital mix of 7 cell lines from 7 sets of pure samples (1.1M cells)
-X = pd.read_csv("'./LungData.txt", header=None).values.astype("float") 
+X = pd.read_csv("'./LungData.txt", header=None).values.astype("float")
 y = list(pd.read_csv('./LungData_annotations.txt', header=None)[0]) // list of cell-type annotations
 
 // run PARC on 1.1M cells
@@ -199,7 +199,7 @@ parc_labels_rare = parc2.labels
 ## Parameters and Attributes
 
 ### Parameter tuning
-For a more detailed explanation of the impact of tuning key parameters please see the Supplementary Analysis in our paper. 
+For a more detailed explanation of the impact of tuning key parameters please see the Supplementary Analysis in our paper.
 [PARC Supplementary Analysis](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa042/1/btaa042_supplementary-data.pdf?Expires=1583098421&Signature=R1gJB7MebQjg7t9Mp-MoaHdubyyke4OcoevEK5817el27onwA7TlU-~u7Ug1nOUFND2C8cTnwBle7uSHikx7BJ~SOAo6xUeniePrCIzQBi96MvtoL674C8Pd47a4SAcHqrA2R1XMLnhkv6M8RV0eWS-4fnTPnp~lnrGWV5~mdrvImwtqKkOyEVeHyt1Iajeb1W8Msuh0I2y6QXlLDU9mhuwBvJyQ5bV8sD9C-NbdlLZugc4LMqngbr5BX7AYNJxvhVZMSKKl4aMnIf4uMv4aWjFBYXTGwlIKCjurM2GcHK~i~yzpi-1BMYreyMYnyuYHi05I9~aLJfHo~Qd3Ux2VVQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA)
 
 | Input Parameter | Description |
@@ -219,8 +219,28 @@ For a more detailed explanation of the impact of tuning key parameters please se
 | `f1_mean` | (list) f1 score (not weighted by population). For details see supplementary section of [paper](https://doi.org/10.1101/765628) |
 | `stats_df` | (DataFrame) stores parameter values and performance metrics |
 
+## Developers
 
-## References to dependencies 
+### Installation
+
+To install a development version:
+
+```
+git clone https://github.com/ShobiStassen/PARC.git
+cd PARC
+pip install -e ".[extra]"
+```
+
+### Testing
+
+To run the test suite for the package:
+
+```
+cd PARC
+pytest tests/
+```
+
+## References to dependencies
 - Leiden (pip install leidenalg) (V.A. Traag, 2019 doi.org/10.1038/s41598-019-41695-z)
 - hsnwlib Malkov, Yu A., and D. A. Yashunin. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small   World graphs." TPAMI, preprint: https://arxiv.org/abs/1603.09320
 - igraph (igraph.org/python/)
