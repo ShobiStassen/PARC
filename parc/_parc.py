@@ -230,7 +230,7 @@ class PARC:
         dummy, PARC_labels_leiden = np.unique(list(PARC_labels_leiden.flatten()), return_inverse=True)
         for cluster in set(PARC_labels_leiden):
             population = len(np.where(PARC_labels_leiden == cluster)[0])
-            if population < 10:
+            if population < small_pop:
                 small_pop_exist = True
                 small_pop_list.append(list(np.where(PARC_labels_leiden == cluster)[0]))
                 small_cluster_list.append(cluster)
@@ -254,7 +254,7 @@ class PARC:
             small_pop_exist = False
             for cluster in set(list(PARC_labels_leiden.flatten())):
                 population = len(np.where(PARC_labels_leiden == cluster)[0])
-                if population < 10:
+                if population < small_pop:
                     small_pop_exist = True
 
                     small_pop_list.append(np.where(PARC_labels_leiden == cluster)[0])
